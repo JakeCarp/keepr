@@ -8,7 +8,7 @@ namespace keepr.models
     public string Name { get; set; }
     public string Description { get; set; }
     public string GameFormat { get; set; }
-    public List<string> Colors { get; set; }
+    public string Colors { get; set; }
     public bool Private { get; set; }
     public string UserId { get; set; }
 

@@ -12,7 +12,11 @@ namespace keepr.Repositories
     {
       _db = db;
     }
-
+    //get all decks
+    public IEnumerable<Deck> getAll()
+    {
+      return _db.Query<Deck>("SELECT * FROM Decks");
+    }
     //Get all user decks
     public IEnumerable<Deck> getUserDecks(string userId)
     {
