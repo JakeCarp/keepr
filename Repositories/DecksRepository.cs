@@ -32,8 +32,8 @@ namespace keepr.Repositories
     public Deck addDeck(Deck newDeck)
     {
       int id = _db.ExecuteScalar<int>(@"
-      INSERT INTO Decks(name, description, gameFormat, colors, private, userId, saves, shares)
-      VALUES(@name, @description, @gameFormat, @colors, @private, @userId, @saves, @shares);
+      INSERT INTO Decks(name, description, colors, private, userId, saves, shares)
+      VALUES(@name, @description, @colors, @private, @userId, @saves, @shares);
       SELECT LAST_INSERT_ID();", newDeck);
       newDeck.Id = id;
       return newDeck;

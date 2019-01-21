@@ -1,11 +1,14 @@
 using System.Collections.Generic;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 using keepr.models;
 using keepr.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace keepr.controllers
 {
-  [Route("api/decks")]
+  [Route("api/[controller]")]
   [ApiController]
   public class DecksController : ControllerBase
   {
