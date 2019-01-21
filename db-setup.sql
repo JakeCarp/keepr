@@ -25,19 +25,17 @@
 -- );
 
 -- CREATE TABLE Cards (
---     id VARCHAR(255) NOT NULL,
---     multiverseId INT NOT NULL,
+--     id INT NOT NULL AUTO_INCREMENT,
 --     name VARCHAR(20) NOT NULL,
 --     text VARCHAR(255) NOT NULL,
 --     imgUrl VARCHAR(255),
 --     uses INT DEFAULT 0,
 --     PRIMARY KEY (id)
 -- );
-
 -- CREATE TABLE deckcards (
 --     id int NOT NULL AUTO_INCREMENT,
 --     deckId INT NOT NULL,
---     cardId VARCHAR(255) NOT NULL,
+--     cardId INT NOT NULL,
 --     userId VARCHAR(255) NOT NULL,
 
 --     PRIMARY KEY (id),
@@ -59,6 +57,6 @@
 
 
 -- USE THIS LINE FOR GET KEEPS BY VAULTID
-SELECT * FROM deckcards dc
-INNER JOIN cards c ON c.id = dc.cardId 
-WHERE (deckId = @deckId AND dc.userId = @userId) 
+-- SELECT * FROM deckcards dc
+-- INNER JOIN cards c ON c.id = dc.cardId 
+-- WHERE (deckId = @deckId AND dc.userId = @userId) 
