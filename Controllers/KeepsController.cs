@@ -42,8 +42,9 @@ namespace keepr.controllers
       return BadRequest("Unauthorized");
     }
     [HttpDelete("{id}")]
-    public ActionResult<string> Delete(Keep value)
+    public ActionResult<string> Delete(int id)
     {
+      Keep value = _repo.GetById(id);
       if (value.UserId != HttpContext.User.Identity.Name)
       {
         return BadRequest("Cannot Delete Keeps That Don't Belong To You!");
@@ -54,18 +55,18 @@ namespace keepr.controllers
       }
       return BadRequest("Unable to delete!");
     }
-    [HttpPut]
-    public ActionResult<string> Put(int id, [FromBody] Keep value)
+    [HttpPut("{id}")]
+    public ActionResult<Keep> Put(int id, Keep newKeep)
     {
-      if (value.UserId != HttpContext.User.Identity.Name)
-      {
-        return BadRequest("Unauthorized");
-      }
-      if (_repo.UpdateKeep(id, value))
-      {
-        return Ok("Successfully Updated");
-      }
-      return BadRequest("Unable to Update");
+      Keep oldKeep = _repo.GetById(id);
+      newKeep.Id = id;
+      newKeep.UserId = oldKeep.UserId;
+      newKeep.Name = oldKeep.Name;
+      newKeep.Text = oldKeep.Text;
+      newKeep.ImgUrl = oldKeep.ImgUrl;
+      return _repo.UpdateKeep(newKeep);
+
+
     }
   }
 }

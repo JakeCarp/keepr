@@ -42,18 +42,14 @@ namespace keepr.Repositories
       return success != 0;
     }
     //Update Keep
-    public bool UpdateKeep(int id, Keep value)
+    public Keep UpdateKeep(Keep value)
     {
-      var success = _db.ExecuteScalar(@"
+      _db.Execute(@"
       UPDATE keeps 
-      SET text = '@value.text', name = '@value.name', views = '@value.views', shares = '@value.shares', keeps = '@value.keeps'
-      WHERE id = @value.id 
+      SET views = @views, shares = @shares, keeps = @keeps
+      WHERE id = @id AND userId = @userId;
       ", value);
-      if (success != null)
-      {
-        return true;
-      }
-      return false;
+      return value;
     }
   }
 }
