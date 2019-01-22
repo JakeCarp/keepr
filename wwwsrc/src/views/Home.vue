@@ -1,6 +1,9 @@
 <template>
   <div class="home">
-    <h1>Welcome Home</h1>
+    <h1>HELLO WORLD</h1>
+    <div v-for="keep in keeps">
+      <h1>{{keep.name}}</h1>
+    </div>
   </div>
 </template>
 
@@ -8,10 +11,17 @@
   export default {
     name: "home",
     mounted() {
-      //blocks users not logged in
-      if (!this.$store.state.user.id) {
-        this.$router.push({ name: "login" });
+      this.$store.dispatch('GetAllKeeps')
+    },
+    computed: {
+      keeps() {
+        return this.$store.state.keeps
       }
-    }
+    },
+    data() {
+      return {
+
+      }
+    },
   };
 </script>
