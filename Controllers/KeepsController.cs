@@ -7,21 +7,21 @@ namespace keepr.controllers
 {
   [Route("api/cards")]
   [ApiController]
-  public class CardsController : ControllerBase
+  public class KeepsController : ControllerBase
   {
-    private readonly CardsRepository _repo;
+    private readonly KeepsRepository _repo;
 
-    public CardsController(CardsRepository repo)
+    public KeepsController(KeepsRepository repo)
     {
       _repo = repo;
     }
     [HttpGet]
-    public ActionResult<IEnumerable<Card>> Get()
+    public ActionResult<IEnumerable<Keep>> Get()
     {
       return Ok(_repo.GetAll());
     }
     [HttpGet("{id}")]
-    public ActionResult<Card> Get(int id)
+    public ActionResult<Keep> Get(int id)
     {
       return Ok(_repo.GetById(id));
     }
