@@ -12,15 +12,48 @@ namespace keepr.Repositories
     {
       _db = db;
     }
-    //get all cards
+    //get all keeps
     public IEnumerable<Keep> GetAll()
     {
       return _db.Query<Keep>("SELECT * FROM Keeps");
     }
-    //get a card by Id
+    //get a keep by Id
     public Keep GetById(int id)
     {
       return _db.QueryFirstOrDefault<Keep>("SELECT * FROM Keeps WHERE id = @id", new { id });
+    }
+
+    //add keep
+    public Keep AddKeep(Keep newKeep)
+    {
+      int id = _db.ExecuteScalar<int>(@"
+      INSERT INTO keeps(name, text, imgUrl, userId, views, shares, keeps)
+      VALUES( @name, @text, @imgUrl, @userId, @views, @shares, @keeps);
+      SELECT LAST_INSERT_ID();
+      ", newKeep);
+      newKeep.Id = id;
+      return newKeep;
+    }
+
+    //deleteKeep
+    public bool DeleteKeep(int id)
+    {
+      int success = _db.Execute(@"DELETE FROM keeps WHERE id = @id", new { id });
+      return success != 0;
+    }
+    //Update Keep
+    public bool UpdateKeep(int id, Keep value)
+    {
+      var success = _db.ExecuteScalar(@"
+      UPDATE keeps 
+      SET text = '@value.text', name = '@value.name', views = '@value.views', shares = '@value.shares', keeps = '@value.keeps'
+      WHERE id = @value.id 
+      ", value);
+      if (success != null)
+      {
+        return true;
+      }
+      return false;
     }
   }
 }

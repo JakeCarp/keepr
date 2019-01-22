@@ -28,14 +28,23 @@ namespace keepr.controllers
     [HttpPost]
     public ActionResult<Vault> Post([FromBody] Vault value)
     {
-      Vault result = _repo.addVault(value);
-      return Created("/Vaults/" + result.Id, result);
+      value.UserId = HttpContext.User.Identity.Name;
+      if (value.UserId != null)
+      {
+        Vault result = _repo.addVault(value);
+        return Created("/Vaults/" + result.Id, result);
+      }
+      return BadRequest("Unauthorized");
     }
     //Delete a vault
     [HttpDelete]
-    public ActionResult<string> Delete(int id)
+    public ActionResult<string> Delete(Vault value)
     {
-      if (_repo.DeleteVault(id))
+      if (value.UserId != HttpContext.User.Identity.Name)
+      {
+        return BadRequest("unauthorized");
+      }
+      if (_repo.DeleteVault(value))
       {
         return Ok("Successfully Deleted");
       }

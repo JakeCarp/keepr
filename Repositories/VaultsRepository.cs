@@ -27,16 +27,16 @@ namespace keepr.Repositories
     public Vault addVault(Vault newVault)
     {
       int id = _db.ExecuteScalar<int>(@"
-      INSERT INTO Vaultss(name, description,  isprivate, userId)
-      VALUES(@name, @description, @colors, @isprivate, @userId);
+      INSERT INTO Vaults(name, description,  isprivate, userId)
+      VALUES(@name, @description, @isprivate, @userId);
       SELECT LAST_INSERT_ID();", newVault);
       newVault.Id = id;
       return newVault;
     }
 
-    public bool DeleteVault(int id)
+    public bool DeleteVault(Vault value)
     {
-      int success = _db.Execute("DELETE FROM Vaults WHERE id = @id", new { id });
+      int success = _db.Execute("DELETE FROM Vaults WHERE id = @value.Id", value);
       return success != 0;
     }
 

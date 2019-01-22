@@ -4,13 +4,13 @@ namespace keepr.models
 {
   public class Keep
   {
-    public string Id { get; set; }
+    public int Id { get; set; }
     public string Name { get; set; }
     public string Text { get; set; }
+    public string UserId { get; set; }
     public string ImgUrl { get; set; }
     public int Views { get; set; }
     public int Shares { get; set; }
     public int Keeps { get; set; }
-    public int Uses { get; set; }
   }
 }

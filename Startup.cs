@@ -60,9 +60,9 @@ namespace Keepr
 
       services.AddTransient<IDbConnection>(x => CreateDBContext());
       services.AddTransient<UserRepository>();
-      services.AddTransient<DecksRepository>();
-      services.AddTransient<CardsRepository>();
-      services.AddTransient<DeckCardsRepository>();
+      services.AddTransient<VaultsRepository>();
+      services.AddTransient<KeepsRepository>();
+      services.AddTransient<VaultKeepsRepository>();
 
 
     }
