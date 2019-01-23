@@ -20,6 +20,12 @@ namespace keepr.controllers
     {
       return Ok(_repo.GetAll());
     }
+    //get all user keeps
+    [HttpGet("{userId}")]
+    public ActionResult<IEnumerable<Keep>> Get(string userId)
+    {
+      return Ok(_repo.getUserKeeps(userId));
+    }
     [HttpGet("{id}")]
     public ActionResult<Keep> Get(int id)
     {

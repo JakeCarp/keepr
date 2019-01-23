@@ -17,6 +17,11 @@ namespace keepr.Repositories
     {
       return _db.Query<Keep>("SELECT * FROM Keeps");
     }
+    //get user keeps
+    public IEnumerable<Keep> getUserVaults(string userId)
+    {
+      return _db.Query<Keep>($"SELECT * FROM Keeps WHERE userId=@userId", new { userId });
+    }
     //get a keep by Id
     public Keep GetById(int id)
     {

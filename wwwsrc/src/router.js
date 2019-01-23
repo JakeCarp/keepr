@@ -18,6 +18,9 @@ export default new Router({
       path: '/dashboard/:userId',
       name: 'dashboard',
       component: dashboard
+    },
+    {
+
     }
   ]
 })

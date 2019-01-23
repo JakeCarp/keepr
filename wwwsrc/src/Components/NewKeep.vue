@@ -1,10 +1,20 @@
 <template>
   <div>
     <form @submit.prevent="newKeep()">
-      <input type="text" v-model="this.keep.name" placeholder="Title">
-      <input type="text-field" v-model="this.keep.text" placeholder="Description">
-      <input type="url" v-model="this.keep.imgUrl" placeholder="Image URL"> </form>
-    <button type="submit">Create New Keep</button>
+      <div class="form-group row">
+        <label class="col-3" for="name">Keep Title :</label>
+        <input class="col-8" type="text" name="name" v-model="keep.name" placeholder="Title">
+      </div>
+      <div class="form-group row">
+        <label for="text" class="col-3">Keep Description :</label>
+        <input name="text" class="col-8" type="text-field" v-model="keep.text" placeholder="Description">
+      </div>
+      <div class="form-group row">
+        <label for="imgurl" class="col-3">Image URL :</label>
+        <input name="imgurl" class="col-8" type="url" v-model="keep.imgUrl" placeholder="Image URL">
+      </div>
+    </form>
+    <button class="btn btn-dark" type="submit">Create New Keep</button>
   </div>
 </template>
 <script>
@@ -17,6 +27,11 @@
           text: "",
           imgUrl: "",
         }
+      }
+    },
+    methods: {
+      AddNewKeep() {
+        this.$store.dispatch('AddKeep', this.keep)
       }
     },
   }

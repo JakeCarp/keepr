@@ -15,7 +15,7 @@
       </div>
     </div>
     <b-btn v-b-modal.modal1>New Keep</b-btn>
-    <b-modal id="modal1" title="Create A New Keep">
+    <b-modal hide-footer id="modal1" title="Create A New Keep">
       <login v-if="!user.id" />
       <newkeep v-if="user.id" />
     </b-modal>
