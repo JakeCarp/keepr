@@ -43,7 +43,6 @@ namespace keepr.controllers
     [HttpPost]
     public ActionResult<Keep> Post([FromBody] Keep value)
     {
-
       value.UserId = HttpContext.User.Identity.Name;
       if (value.UserId != null)
       {

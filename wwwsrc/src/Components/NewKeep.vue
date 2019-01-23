@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form @submit.prevent="newKeep()">
+    <form @submit.prevent="AddNewKeep(user.username)">
       <div class="form-group row">
         <label class="col-3" for="name">Keep Title :</label>
         <input class="col-8" type="text" name="name" v-model="keep.name" placeholder="Title">
@@ -13,8 +13,12 @@
         <label for="imgurl" class="col-3">Image URL :</label>
         <input name="imgurl" class="col-8" type="url" v-model="keep.imgUrl" placeholder="Image URL">
       </div>
+      <div class="form-group row">
+        <label for="isprivate" class="col-3">Private?</label>
+        <input name="isprivate" type="checkbox" v-model="keep.isPrivate">
+      </div>
+      <button class="btn btn-dark" type="submit">Create New Keep</button>
     </form>
-    <button class="btn btn-dark" type="submit">Create New Keep</button>
   </div>
 </template>
 <script>
@@ -26,19 +30,20 @@
           name: "",
           text: "",
           imgUrl: "",
-          creatorName: user.name
+          creatorName: ""
         }
       }
     },
     methods: {
-      AddNewKeep() {
+      AddNewKeep(username) {
+        this.keep.creatorName = username
         this.$store.dispatch('AddKeep', this.keep)
       },
-      computed: {
-        user() {
-          return this.$store.state.user
-        }
-      },
+    },
+    computed: {
+      user() {
+        return this.$store.state.user
+      }
     },
   }
 </script>

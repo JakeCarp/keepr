@@ -6,8 +6,11 @@
         <div class="card-img-top">
           <img :src="keep.imgUrl" />
         </div>
-        <h1 class="card-title">{{keep.name}}</h1>
-        <div class="row">
+        <div class="card-body">
+          <h1 class="card-title">{{keep.name}}</h1>
+          <h4 class="card-subtitle">- {{keep.creatorName}}</h4>
+        </div>
+        <div class="row card-footer">
           <i class="fas fa-eye col-4"> {{keep.views}}</i>
           <i class="fas fa-share col-4"> {{keep.shares}}</i>
           <i class="fas fa-folder-plus col-4"> {{keep.keeps}}</i>
