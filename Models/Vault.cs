@@ -9,6 +9,7 @@ namespace keepr.models
     public string Description { get; set; }
 
     public bool IsPrivate { get; set; }
+    public string ImgUrl { get; set; }
     public string UserId { get; set; }
   }
 }

@@ -52,6 +52,9 @@
       },
       user() {
         return this.$store.state.user
+      },
+      vaults() {
+        return this.$store.state.vaults
       }
     },
   }
