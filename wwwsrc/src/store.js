@@ -94,6 +94,13 @@ export default new Vuex.Store({
           commit('setTargetKeep', res.data)
         })
     },
+    //add keep
+    AddKeep({ commit, dispatch }, payload) {
+      api.post('keeps', payload)
+        .then(res => {
+          dispatch('GetAllKeeps')
+        })
+    },
     //update Keep
     UpdateKeep({ commit, dispatch }, payload) {
       api.put('keeps/' + payload.keepId)
