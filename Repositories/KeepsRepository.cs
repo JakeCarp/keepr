@@ -15,12 +15,17 @@ namespace keepr.Repositories
     //get all keeps
     public IEnumerable<Keep> GetAll()
     {
-      return _db.Query<Keep>("SELECT * FROM Keeps");
+      return _db.Query<Keep>("SELECT * FROM Keeps WHERE isPrivate = 0");
     }
     //get user keeps
     public IEnumerable<Keep> getUserKeeps(string userId)
     {
       return _db.Query<Keep>($"SELECT * FROM Keeps WHERE userId=@userId", new { userId });
+    }
+    //get another users keeps
+    public IEnumerable<Keep> getAnotherUsersKeeps(string userId)
+    {
+      return _db.Query<Keep>($"SELECT * FROM Keeps WHERE userId = @userId AND isPrivate = 0");
     }
     //get a keep by Id
     public Keep GetById(int id)
@@ -32,8 +37,8 @@ namespace keepr.Repositories
     public Keep AddKeep(Keep newKeep)
     {
       int id = _db.ExecuteScalar<int>(@"
-      INSERT INTO keeps(name, text, imgUrl, userId, views, shares, keeps)
-      VALUES( @name, @text, @imgUrl, @userId, @views, @shares, @keeps);
+      INSERT INTO keeps(name, text, imgUrl, userId, views, shares, keeps, isPrivate)
+      VALUES( @name, @text, @imgUrl, @userId, @views, @shares, @keeps, @isPrivate);
       SELECT LAST_INSERT_ID();
       ", newKeep);
       newKeep.Id = id;

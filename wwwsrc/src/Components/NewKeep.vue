@@ -26,13 +26,19 @@
           name: "",
           text: "",
           imgUrl: "",
+          creatorName: user.name
         }
       }
     },
     methods: {
       AddNewKeep() {
         this.$store.dispatch('AddKeep', this.keep)
-      }
+      },
+      computed: {
+        user() {
+          return this.$store.state.user
+        }
+      },
     },
   }
 </script>

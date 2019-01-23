@@ -21,10 +21,14 @@ namespace keepr.controllers
       return Ok(_repo.GetAll());
     }
     //get all user keeps
-    [HttpGet("{userId}")]
+    [HttpGet("user/{userId}")]
     public ActionResult<IEnumerable<Keep>> Get(string userId)
     {
-      return Ok(_repo.getUserKeeps(userId));
+      if (userId == HttpContext.User.Identity.Name)
+      {
+        return Ok(_repo.getUserKeeps(userId));
+      }
+      return Ok(_repo.getAnotherUsersKeeps(userId));
     }
     [HttpGet("{id}")]
     public ActionResult<Keep> Get(int id)
@@ -39,6 +43,7 @@ namespace keepr.controllers
     [HttpPost]
     public ActionResult<Keep> Post([FromBody] Keep value)
     {
+
       value.UserId = HttpContext.User.Identity.Name;
       if (value.UserId != null)
       {

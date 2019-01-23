@@ -8,9 +8,12 @@ namespace keepr.models
     public string Name { get; set; }
     public string Text { get; set; }
     public string UserId { get; set; }
+    public string CreatorName { get; set; }
     public string ImgUrl { get; set; }
     public int Views { get; set; }
     public int Shares { get; set; }
     public int Keeps { get; set; }
+
+    public bool IsPrivate { get; set; }
   }
 }

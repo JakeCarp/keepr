@@ -22,7 +22,11 @@ namespace keepr.controllers
     [HttpGet("{userId}")]
     public ActionResult<IEnumerable<Vault>> Get(string userId)
     {
-      return Ok(_repo.getUserVaults(userId));
+      if (userId == HttpContext.User.Identity.Name)
+      {
+        return Ok(_repo.getUserVaults(userId));
+      }
+      return Ok(_repo.getAnotherUsersVaults(userId));
     }
     //add a new vault
     [HttpPost]

@@ -17,7 +17,10 @@ namespace keepr.Repositories
     {
       return _db.Query<Vault>($"SELECT * FROM Vaults WHERE userId=@userId", new { userId });
     }
-
+    public IEnumerable<Vault> getAnotherUsersVaults(string userId)
+    {
+      return _db.Query<Vault>($"SELECT * FROM Vaults WHERE userId = @userId AND isprivate = 0", new { userId });
+    }
     //Get a Deck by Id
     public Vault GetById(int id)
     {
