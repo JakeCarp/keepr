@@ -2,6 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 // @ts-ignore
 import Home from './views/Home.vue'
+// @ts-ignore
+import dashboard from './views/Dashboard.vue'
 
 Vue.use(Router)
 
@@ -11,6 +13,11 @@ export default new Router({
       path: '/',
       name: 'home',
       component: Home
+    },
+    {
+      path: '/dashboard/:userId',
+      name: 'dashboard',
+      component: dashboard
     }
   ]
 })

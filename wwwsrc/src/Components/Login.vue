@@ -1,5 +1,6 @@
 <template>
   <div class="login">
+    <h3>Login or Register To Continue</h3>
     <form v-if="loginForm" @submit.prevent="loginUser">
       <input type="email" v-model="creds.email" placeholder="email">
       <input type="password" v-model="creds.password" placeholder="password">

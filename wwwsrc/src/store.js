@@ -3,7 +3,9 @@ import Vuex from 'vuex'
 import Axios from 'axios'
 import router from './router'
 
+
 Vue.use(Vuex)
+
 
 let auth = Axios.create({
   baseURL: "http://localhost:5000/account/",
@@ -67,6 +69,12 @@ export default new Vuex.Store({
         })
         .catch(e => {
           console.log('Login Failed')
+        })
+    },
+    logout({ commit, dispatch }) {
+      auth.delete('logout')
+        .then(res => {
+          commit('setUser', res.data)
         })
     },
     //#endregion
