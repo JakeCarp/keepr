@@ -1,8 +1,16 @@
 <template>
   <div>
-    <h1 v-if="this.$route.params.userId == user.id">Your Keeps</h1>
+    <div class="row">
+      <div class="col-3">
+        <button class="btn btn-dark">New Keep</button>
+      </div>
+      <h1 class="col-6" v-if="this.$route.params.userId == user.id">Your Keeps</h1>
+      <div class="col-3">
+        <button class="btn btn-dark">New Vault</button>
+      </div>
+    </div>
     <div class="card-deck">
-      <div v-for="keep in keeps" class="card col-4">
+      <div v-for="keep in keeps" class="card col-4 text-white bg-dark border-info">
         <div class="card-header row">
           <i v-if="!keep.isPrivate" class="fas fa-lock-open col-4"></i>
           <i v-if="keep.isPrivate" class="fas fa-lock col-4"></i>

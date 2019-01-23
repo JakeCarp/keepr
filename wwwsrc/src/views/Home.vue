@@ -2,13 +2,13 @@
   <div class="home">
     <h1>HELLO WORLD</h1>
     <div class="card-deck">
-      <div v-for="keep in keeps" class="card col-4">
+      <div v-for="keep in keeps" class="card col-4 text-white bg-dark border-info">
+        <h1 class="card-header">{{keep.name}}</h1>
         <div class="card-img-top">
           <img :src="keep.imgUrl" />
         </div>
         <div class="card-body">
-          <h1 class="card-title">{{keep.name}}</h1>
-          <h4 class="card-subtitle">- {{keep.creatorName}}</h4>
+          <h4 class="card-subtitle">{{keep.creatorName}}</h4>
         </div>
         <div class="row card-footer">
           <i class="fas fa-eye col-4"> {{keep.views}}</i>
