@@ -13,7 +13,7 @@
       <div class="collapse" id="navbarToggleExternalContent">
         <div class="drop-back p-4">
           <ul class="navbar-nav mt-2 mt-lg-0 menu">
-            <router-link class="home-font" data-toggle="collapse" data-target="#navbarToggleExternalContent" to="">Home</router-link>
+            <router-link class="home-font" data-toggle="collapse" data-target="#navbarToggleExternalContent" to="/">Home</router-link>
             <router-link class="home-font" data-toggle="collapse" data-target="#navbarToggleExternalContent" to="/about">About</router-link>
             <router-link @click.native='logout()' class="home-font" data-toggle="collapse" data-target="#navbarToggleExternalContent"
               to="">Logout</router-link>

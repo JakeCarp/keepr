@@ -87,6 +87,13 @@ export default new Vuex.Store({
           commit('setKeeps', res.data)
         })
     },
+    //Get User Keeps
+    GetUserKeeps({ commit, dispatch }, userId) {
+      api.get('keeps/' + userId)
+        .then(res => {
+          commit('setKeeps', res.data)
+        })
+    },
     //Get keep By Id
     GetTargetKeep({ commit, dispatch }, keepId) {
       api.get('keeps/' + keepId)
@@ -114,5 +121,9 @@ export default new Vuex.Store({
       dispatch('GetAllKeeps')
     },
     //#endregion
+    //route to user dash
+    RouteToDash({ commit, dispatch }, userid) {
+      router.push({ name: 'dashboard', params: { userId: userid } })
+    }
   }
 })

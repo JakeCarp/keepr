@@ -4,7 +4,7 @@
     <div class="card-deck">
       <div v-for="keep in keeps" class="card col-4">
         <div class="card-img-top">
-          <img src="https://catingtonpost.com/wp-content/uploads/2017/08/457e2d35-4fd2-40dd-83da-cde9cadccdef.gif" />
+          <img :src="keep.imgUrl" />
         </div>
         <h1 class="card-title">{{keep.name}}</h1>
         <div class="row">
@@ -14,11 +14,12 @@
         </div>
       </div>
     </div>
-    <b-btn v-b-modal.modal1>New Keep</b-btn>
-    <b-modal hide-footer id="modal1" title="Create A New Keep">
+    <b-btn class="btn btn-dark" v-b-modal.newKeep>New Keep</b-btn>
+    <b-modal hide-footer id="newKeep" title="Create A New Keep">
       <login v-if="!user.id" />
       <newkeep v-if="user.id" />
     </b-modal>
+    <button class="btn btn-dark" @click="RouteToDash">My Dashboard</button>
   </div>
 </template>
 
@@ -47,7 +48,12 @@
     components: {
       login,
       newkeep,
-    }
+    },
+    methods: {
+      RouteToDash() {
+        this.$store.dispatch('RouteToDash', this.user.id)
+      }
+    },
   };
 </script>
 <style>

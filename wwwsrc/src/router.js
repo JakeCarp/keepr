@@ -4,6 +4,8 @@ import Router from 'vue-router'
 import Home from './views/Home.vue'
 // @ts-ignore
 import dashboard from './views/Dashboard.vue'
+// @ts-ignore
+import keep from './views/Keep.vue'
 
 Vue.use(Router)
 
@@ -20,7 +22,9 @@ export default new Router({
       component: dashboard
     },
     {
-
+      path: '/keep/:keepId',
+      name: 'keep',
+      component: keep
     }
   ]
 })
