@@ -89,7 +89,6 @@ export default new Vuex.Store({
     },
     //Get User Keeps
     GetUserKeeps({ commit, dispatch }, userId) {
-      debugger
       api.get('keeps/user/' + userId)
         .then(res => {
           commit('setKeeps', res.data)
@@ -104,7 +103,6 @@ export default new Vuex.Store({
     },
     //add keep
     AddKeep({ commit, dispatch }, payload) {
-      payload.creatorName = this.state.user.name
       api.post('keeps', payload)
         .then(res => {
           dispatch('GetAllKeeps')
