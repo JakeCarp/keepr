@@ -2,18 +2,20 @@
   <div>
     <div class="row">
       <div class="col-3">
-        <button class="btn btn-dark">New Keep</button>
+        <button v-if="targetUser == user.username" class="btn btn-dark">New Keep</button>
       </div>
-      <h1 class="col-6" v-if="this.$route.params.userId == user.id">Your Keeps</h1>
+      <h1 class="col-6" v-if="this.$route.params.userId == user.id && targetUser == user.username">Your Keeps</h1>
+      <h1 class="col-6" v-if="targetUser != user.username">{{targetUser}}'s Keeps</h1>
       <div class="col-3">
-        <button class="btn btn-dark">New Vault</button>
+        <button v-if="targetUser == user.username" class="btn btn-dark">New Vault</button>
       </div>
     </div>
     <div class="card-deck">
-      <div v-for="keep in keeps" class="card col-4 text-white bg-dark border-info">
+      <div v-for="keep in userKeeps" class="card col-4 text-white bg-dark border-info">
         <div class="card-header row">
-          <i v-if="!keep.isPrivate" class="fas fa-lock-open col-4" @click="togglePrivate(keep)"></i>
+          <i v-if="!keep.isPrivate && user.id == keep.userId" class="fas fa-lock-open col-4" @click="togglePrivate(keep)"></i>
           <i v-if="keep.isPrivate" class="fas fa-lock col-4" @click="togglePrivate(keep)"></i>
+          <i v-if="user.id == keep.userId" class="fas fa-trash col-4 offset-4" @click="deletekeep(keep)"></i>
         </div>
         <div class="card-img-top">
           <img :src="keep.imgUrl" />
@@ -47,20 +49,26 @@
       this.$store.dispatch('GetUserKeeps', this.$route.params.userId)
     },
     computed: {
-      keeps() {
-        return this.$store.state.keeps
+      userKeeps() {
+        return this.$store.state.userKeeps
       },
       user() {
         return this.$store.state.user
       },
       vaults() {
         return this.$store.state.vaults
+      },
+      targetUser() {
+        return this.$store.state.targetUser
       }
     },
     methods: {
       togglePrivate(keep) {
         keep.isPrivate = !keep.isPrivate
         this.$store.dispatch("UpdateKeep", keep)
+      },
+      deletekeep(keep) {
+        this.$store.dispatch('DeleteKeep', keep)
       }
     },
   }

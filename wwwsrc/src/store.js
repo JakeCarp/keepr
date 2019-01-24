@@ -24,7 +24,10 @@ export default new Vuex.Store({
     user: {},
     keeps: [],
     targetKeep: {},
-    vaults: []
+    vaults: [],
+    userKeeps: [],
+    userVaults: [],
+    targetUser: ''
   },
   mutations: {
     setUser(state, user) {
@@ -37,6 +40,12 @@ export default new Vuex.Store({
     },
     setTargetKeep(state, keep) {
       state.targetKeep = keep
+    },
+    SetUserKeeps(state, userkeeps) {
+      state.userKeeps = userkeeps
+    },
+    SetTargetUser(state, username) {
+      state.targetUser = username
     }
   },
   actions: {
@@ -92,7 +101,7 @@ export default new Vuex.Store({
     GetUserKeeps({ commit, dispatch }, userId) {
       api.get('keeps/user/' + userId)
         .then(res => {
-          commit('setKeeps', res.data)
+          commit('SetUserKeeps', res.data)
         })
     },
     //Get keep By Id
@@ -117,14 +126,23 @@ export default new Vuex.Store({
         })
     },
     //delete Keep
-    DeleteKeep({ commit, dispatch }, keepId) {
-      api.delete('keeps/' + keepId)
-      dispatch('GetAllKeeps')
+    DeleteKeep({ commit, dispatch }, keep) {
+      api.delete('keeps/' + keep.id)
+      dispatch('GetUserKeeps', keep.userId)
     },
     //#endregion
+    //Vualt Actions
+    //#region 
+    //Get User Vualts
+    GetUserVaults({ commit, dispatch }) {
+
+    },
+    //#endregion
+
     //route to user dash
-    RouteToDash({ commit, dispatch }, userid) {
-      router.push({ name: 'dashboard', params: { userId: userid } })
+    RouteToDash({ commit, dispatch }, payload) {
+      commit('SetTargetUser', payload.targetname)
+      router.push({ name: 'dashboard', params: { userId: payload.userId } })
     }
   }
 })

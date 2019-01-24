@@ -6,8 +6,8 @@
         <login v-if="!user.id" />
         <newkeep v-if="user.id" />
       </b-modal>
-      <h1 class="col">Today Is a New Day {{user.username}}</h1>
-      <button class="btn btn-dark col" @click="RouteToDash">My Dashboard</button>
+      <h1 class="col greeting">Today Is a New Day {{user.username}}</h1>
+      <button class="btn btn-dark col" @click="RouteToDash(user.id, user.username)">My Dashboard</button>
     </div>
     <div class="card-deck">
       <div v-for="keep in keeps" class="card col-4 text-white bg-dark border-info">
@@ -16,7 +16,7 @@
           <img @click="viewKeep(keep)" class="viewkeep" :src="keep.imgUrl" />
         </div>
         <div class="card-body">
-          <h4 class="card-subtitle">{{keep.creatorName}}</h4>
+          <h4 @click="RouteToDash(keep.userId, keep.creatorName)" class="card-subtitle viewkeep">{{keep.creatorName}}</h4>
         </div>
         <div class="row card-footer">
           <i class="fas fa-eye col-4"> {{keep.views}}</i>
@@ -25,7 +25,7 @@
             <div class="row">
               <!-- <a :href="facebookUrl + !INSERT HEROKU URL AFTER DEPLOYMENT!/keep.id " target="_blank"></a> -->
               <i @click="addShare(keep)" class="modalContent fab fa-facebook-square col-2"></i>
-              <h3@click="addShare(keep)" class="col-7 modalContent">Share to Facebook</h3>
+              <h3 @click="addShare(keep)" class="col-7 modalContent">Share to Facebook</h3>
             </div>
             <div class="row">
               <!-- <a :href="twitterUrl + !INSERT HEROKU URL AFTER DEPLOYMENT!/keep.id"></a> -->
@@ -75,8 +75,8 @@
       newkeep,
     },
     methods: {
-      RouteToDash() {
-        this.$store.dispatch('RouteToDash', this.user.id)
+      RouteToDash(userId, username) {
+        this.$store.dispatch('RouteToDash', { userId: userId, targetname: username })
       },
       addShare(keep) {
         keep.shares++
@@ -91,7 +91,16 @@
   };
 </script>
 <style>
+  html {
+    width: 101%;
+  }
+
   .btn {
+    margin: 1rem;
+    height: 5vh;
+  }
+
+  .greeting {
     margin: 1rem;
   }
 

@@ -25,7 +25,7 @@ namespace keepr.Repositories
     //get another users keeps
     public IEnumerable<Keep> getAnotherUsersKeeps(string userId)
     {
-      return _db.Query<Keep>($"SELECT * FROM Keeps WHERE userId = @userId AND isPrivate = 0");
+      return _db.Query<Keep>($"SELECT * FROM Keeps WHERE userId = @userId AND isPrivate = 0", new { userId });
     }
     //get a keep by Id
     public Keep GetById(int id)
