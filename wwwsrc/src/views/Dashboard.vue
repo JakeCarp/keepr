@@ -12,8 +12,8 @@
     <div class="card-deck">
       <div v-for="keep in keeps" class="card col-4 text-white bg-dark border-info">
         <div class="card-header row">
-          <i v-if="!keep.isPrivate" class="fas fa-lock-open col-4"></i>
-          <i v-if="keep.isPrivate" class="fas fa-lock col-4"></i>
+          <i v-if="!keep.isPrivate" class="fas fa-lock-open col-4" @click="togglePrivate(keep)"></i>
+          <i v-if="keep.isPrivate" class="fas fa-lock col-4" @click="togglePrivate(keep)"></i>
         </div>
         <div class="card-img-top">
           <img :src="keep.imgUrl" />
@@ -55,6 +55,12 @@
       },
       vaults() {
         return this.$store.state.vaults
+      }
+    },
+    methods: {
+      togglePrivate(keep) {
+        keep.isPrivate = !keep.isPrivate
+        this.$store.dispatch("UpdateKeep", keep)
       }
     },
   }

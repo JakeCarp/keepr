@@ -62,6 +62,7 @@
 <style>
   i {
     font-size: 2rem;
+    cursor: pointer;
   }
 
   img {

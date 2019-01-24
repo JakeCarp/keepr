@@ -68,15 +68,7 @@ namespace keepr.controllers
     [HttpPut("{id}")]
     public ActionResult<Keep> Put(int id, Keep newKeep)
     {
-      Keep oldKeep = _repo.GetById(id);
-      newKeep.Id = id;
-      newKeep.UserId = oldKeep.UserId;
-      newKeep.Name = oldKeep.Name;
-      newKeep.Text = oldKeep.Text;
-      newKeep.ImgUrl = oldKeep.ImgUrl;
       return _repo.UpdateKeep(newKeep);
-
-
     }
   }
 }

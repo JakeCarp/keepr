@@ -111,7 +111,8 @@ export default new Vuex.Store({
     },
     //update Keep
     UpdateKeep({ commit, dispatch }, payload) {
-      api.put('keeps/' + payload.keepId)
+      debugger
+      api.put('keeps/' + payload.id, payload)
         .then(res => {
           commit('setTargetKeep', res.data)
         })

@@ -56,7 +56,7 @@ namespace keepr.Repositories
     {
       _db.Execute(@"
       UPDATE keeps 
-      SET views = @views, shares = @shares, keeps = @keeps isPrivate = @isPrivate
+      SET views = @views, shares = @shares, keeps = @keeps, isPrivate = @isPrivate
       WHERE id = @id AND userId = @userId;
       ", value);
       return value;
