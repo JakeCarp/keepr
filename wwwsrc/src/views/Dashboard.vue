@@ -2,12 +2,36 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-3">
-        <button v-if="targetUser == user.username" class="btn btn-dark">New Keep</button>
+        <b-btn v-if="targetUser == user.username" class="btn btn-dark" v-b-modal.newKeep>New Keep</b-btn>
+        <b-modal hide-footer id="newKeep" title="Create A New Keep">
+          <newkeep />
+        </b-modal>
       </div>
       <h1 class="col-6" v-if="this.$route.params.userId == user.id && targetUser == user.username">Your Keeps</h1>
       <h1 class="col-6" v-if="targetUser != user.username">{{targetUser}}'s Keeps</h1>
       <div class="col-3">
-        <button v-if="targetUser == user.username" class="btn btn-dark">New Vault</button>
+        <b-btn v-b-modal.newVault v-if="targetUser == user.username" class="btn btn-dark">New Vault</b-btn>
+        <b-modal hide-footer id="newVault" title="Create A New Vault">
+          <form @submit.prevent="createVault()">
+            <div class="form-group row">
+              <label class="col-3" for="name">Title : </label>
+              <input class="col-8" type="text" v-model="newVault.name" name="name">
+            </div>
+            <div class="form-group row">
+              <label class="col-3" for="description">Description : </label>
+              <input class="col-8" type="text-field" v-model="newVault.description" name="description">
+            </div>
+            <div class="form-group row">
+              <label class="col-3" for="imgurl">Cover Image URL : </label>
+              <input class="col-8" type="url" name="imgurl" v-model="newVault.imgUrl" placeholder="255 character max">
+            </div>
+            <div class="form-group row">
+              <label class="col-3" for="isPrivate">Private?</label>
+              <input type="checkbox" name="isPrivate" v-model="newVault.isPrivate">
+            </div>
+            <button class="btn btn-dark" type="submit">Create New Vault</button>
+          </form>
+        </b-modal>
       </div>
     </div>
     <div class="card-deck">
@@ -25,28 +49,50 @@
         </div>
         <div class="row card-footer">
           <i class="fas fa-eye col-4"> {{keep.views}}</i>
-          <i class="fas fa-share col-4"> {{keep.shares}}</i>
+          <i @click="modalShow = !modalShow" class="fas fa-share col-4"> {{keep.shares}}</i>
+          <b-modal v-model="modalShow" :id="keep.name" hide-footer hide-header>
+            <div class="row">
+              <!-- <a :href="facebookUrl + !INSERT HEROKU URL AFTER DEPLOYMENT!/keep.id " target="_blank"></a> -->
+              <i @click="addShare(keep)" class="modalContent fab fa-facebook-square col-2"></i>
+              <h3 @click="addShare(keep)" class="col-7 modalContent">Share to Facebook</h3>
+            </div>
+            <div class="row">
+              <!-- <a :href="twitterUrl + !INSERT HEROKU URL AFTER DEPLOYMENT!/keep.id"></a> -->
+              <i @click="addShare(keep)" class="modalContent fab fa-twitter-square col-2"></i>
+              <h3 @click="addShare(keep)" class="modalContent col-7">Share To Twitter</h3>
+            </div>
+            <div class="row">
+              <!-- <a :href="linkedinUrl + !INSERT HEROKU URL AFTER DEPLOYMENT!/keep.id"></a> -->
+              <i @click="addShare(keep)" class="modalContent fab fa-linkedin col-2"> </i>
+              <h3 @click="addShare(keep)" class="modalContent col-7">Share To Linkedin</h3>
+            </div>
+          </b-modal>
           <i class="fas fa-folder-plus col-4"> {{keep.keeps}}</i>
         </div>
       </div>
     </div>
-    <!-- <div class="card-deck">
-      <div v-for="vaults in Vaults" class="card col-4">
-        <div class="card-img-top">
-
-        </div>
+    <div class="row">
+      <h1 class="col" v-if="this.$route.params.userId == user.id && targetUser == user.username">Your Vaults</h1>
+      <h1 class="col" v-if="targetUser != user.username">{{targetUser}}'s Vaults</h1>
+    </div>
+    <div class="card-deck">
+      <div v-for="vault in vaults" class="card bg-dark text-white col-4">
+        <img :src="vault.imgUrl" class="card-img">
         <div class="card-body">
-          <h1 class="card-title">{{vualt.name}}</h1>
+          <h4 class="card-title">{{vault.name}}</h4>
+          <h5 class="card-text">{{vault.description}}</h5>
         </div>
       </div>
-    </div> -->
+    </div>
   </div>
 </template>
 <script>
+  import newkeep from "@/Components/NewKeep"
   export default {
     name: "dashboard",
     mounted() {
       this.$store.dispatch('GetUserKeeps', this.$route.params.userId)
+      this.$store.dispatch('GetUserVaults', this.$route.params.userId)
     },
     computed: {
       userKeeps() {
@@ -69,6 +115,22 @@
       },
       deletekeep(keep) {
         this.$store.dispatch('DeleteKeep', keep)
+      },
+      createVault() {
+        this.$store.dispatch('AddVault', this.newVault)
+      }
+    },
+    components: {
+      newkeep
+    },
+    data() {
+      return {
+        modalShow: false,
+        newVault: {
+          name: '',
+          description: '',
+          imgUrl: '',
+        }
       }
     },
   }

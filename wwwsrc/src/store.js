@@ -30,9 +30,15 @@ export default new Vuex.Store({
     targetUser: ''
   },
   mutations: {
+    //User Mutations
+    //#region 
     setUser(state, user) {
       state.user = user
     },
+    SetTargetUser(state, username) {
+      state.targetUser = username
+    },
+    //#endregion
     //Keep mutations
     //#region 
     setKeeps(state, keeps) {
@@ -44,9 +50,13 @@ export default new Vuex.Store({
     SetUserKeeps(state, userkeeps) {
       state.userKeeps = userkeeps
     },
-    SetTargetUser(state, username) {
-      state.targetUser = username
+    //#endregion
+    //Vault Mutations
+    //#region 
+    SetVaults(state, vaults) {
+      state.vaults = vaults
     }
+    //#endregion
   },
   actions: {
     //Auth Actions
@@ -65,7 +75,6 @@ export default new Vuex.Store({
       auth.get('authenticate')
         .then(res => {
           commit('setUser', res.data)
-          router.push({ name: 'home' })
         })
         .catch(e => {
           console.log('not authenticated')
@@ -102,6 +111,7 @@ export default new Vuex.Store({
       api.get('keeps/user/' + userId)
         .then(res => {
           commit('SetUserKeeps', res.data)
+          commit('SetTargetUser', res.data[0].creatorName)
         })
     },
     //Get keep By Id
@@ -133,12 +143,48 @@ export default new Vuex.Store({
     //#endregion
     //Vualt Actions
     //#region 
-    //Get User Vualts
-    GetUserVaults({ commit, dispatch }) {
-
+    //Get User Vaults
+    GetUserVaults({ commit, dispatch }, userId) {
+      api.get('vaults/' + userId)
+        .then(res => {
+          commit('SetVaults', res.data)
+        })
+    },
+    AddVault({ commit, dispatch }, vault) {
+      api.post('vaults', vault)
+        .then(res => {
+          dispatch('GetUserVaults', vault.userId)
+        })
+    },
+    DeleteVault({ commit, dispatch }, vault) {
+      api.delete('vaults', vault)
+        .then(res => {
+          dispatch('GetUserVaults', vault.userId)
+        })
     },
     //#endregion
-
+    //VaultKeep Actions
+    //#region 
+    //Get keeps by vault ID
+    GetKeepsByVaultId({ commit, dispatch }, vaultId) {
+      api.get('vaultkeeps/' + vaultId)
+        .then(res => {
+          commit('SetVaultKeeps', res.data)
+        })
+    },
+    AddVaultKeep({ commit, dispatch }, payload) {
+      api.post('vaultkeeps', payload)
+        .then(res => {
+          dispatch('GetKeepsByVaultId', payload)
+        })
+    },
+    DeleteVaultKeep({ commit, dispatch }, vaultkeep) {
+      api.delete('vaultkeeps/' + vaultkeep.id, vaultkeep)
+        .then(res => {
+          dispatch('GetKeepsByVaultId')
+        })
+    },
+    //#endregion
     //route to user dash
     RouteToDash({ commit, dispatch }, payload) {
       commit('SetTargetUser', payload.targetname)
