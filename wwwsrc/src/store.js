@@ -27,6 +27,7 @@ export default new Vuex.Store({
     vaults: [],
     userKeeps: [],
     userVaults: [],
+    targetVault: [],
     targetUser: ''
   },
   mutations: {
@@ -55,6 +56,9 @@ export default new Vuex.Store({
     //#region 
     SetVaults(state, vaults) {
       state.vaults = vaults
+    },
+    SetTargetVault(state, vault) {
+      state.targetVault = vault
     }
     //#endregion
   },
@@ -145,9 +149,21 @@ export default new Vuex.Store({
     //#region 
     //Get User Vaults
     GetUserVaults({ commit, dispatch }, userId) {
-      api.get('vaults/' + userId)
+      api.get('vaults/user/' + userId)
         .then(res => {
           commit('SetVaults', res.data)
+        })
+    },
+    GetVaultById({ commit, dispatch }, vaultId) {
+      api.get('vaults/' + vaultId)
+        .then(res => {
+          commit('SetTargetVault', res.data)
+        })
+    },
+    UpdateVault({ commit, dispatch }, vault) {
+      api.put('vaults/' + vault.id, vault)
+        .then(res => {
+          dispatch('GetUserVaults', vault.userId)
         })
     },
     AddVault({ commit, dispatch }, vault) {

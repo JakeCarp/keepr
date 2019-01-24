@@ -76,12 +76,15 @@
       <h1 class="col" v-if="targetUser != user.username">{{targetUser}}'s Vaults</h1>
     </div>
     <div class="card-deck">
-      <div v-for="vault in vaults" class="card bg-dark text-white col-4">
-        <img :src="vault.imgUrl" class="card-img">
-        <div class="card-body">
-          <h4 class="card-title">{{vault.name}}</h4>
-          <h5 class="card-text">{{vault.description}}</h5>
+      <div v-for="vault in vaults" class="card bg-dark text-white col-4" @click="viewTargetVault(vault.id)">
+        <div class="card-header row">
+          <i v-if="!vault.isPrivate && user.id == vault.userId" class="fas fa-lock-open col-4" @click="togglePrivateVault(vault)"></i>
+          <i v-if="vault.isPrivate" class="fas fa-lock col-4" @click="togglePrivateVault(vault)"></i>
+          <h3 class="col-4">{{vault.name}}</h3>
+          <i v-if="user.id == vault.userId" class="fas fa-trash col-4" @click="deletevault(vault)"></i>
         </div>
+        <img :src="vault.imgUrl" class="card-img-top">
+        <h3 class="card-footer">{{vault.description}}</h3>
       </div>
     </div>
   </div>
@@ -113,11 +116,21 @@
         keep.isPrivate = !keep.isPrivate
         this.$store.dispatch("UpdateKeep", keep)
       },
+      togglePrivateVault(vault) {
+        vault.isPrivate = !vault.isPrivate
+        this.$store.dispatch('UpdateVault', vault)
+      },
       deletekeep(keep) {
         this.$store.dispatch('DeleteKeep', keep)
       },
+      deletevault(vault) {
+        this.$store.dispatch('DeleteVault', vault)
+      },
       createVault() {
         this.$store.dispatch('AddVault', this.newVault)
+      },
+      viewTargetVault(vaultId) {
+        this.$route.push({ name: 'vault', params: { vaultId: vaultId } })
       }
     },
     components: {

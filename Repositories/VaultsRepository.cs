@@ -36,6 +36,15 @@ namespace keepr.Repositories
       newVault.Id = id;
       return newVault;
     }
+    public Vault UpdateVault(Vault value)
+    {
+      _db.Execute(@"
+      UPDATE Vaults 
+      SET isPrivate = @isPrivate
+      WHERE id = @id AND userId = @userId;
+      ", value);
+      return value;
+    }
 
     public bool DeleteVault(Vault value)
     {

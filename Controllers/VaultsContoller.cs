@@ -17,9 +17,14 @@ namespace keepr.controllers
     {
       _repo = repo;
     }
-
+    //Get Vault By Id 
+    [HttpGet("{Id}")]
+    public ActionResult<Vault> Get(int Id)
+    {
+      return Ok(_repo.GetById(Id));
+    }
     //GET user vaults
-    [HttpGet("{userId}")]
+    [HttpGet("user/{userId}")]
     public ActionResult<IEnumerable<Vault>> Get(string userId)
     {
       if (userId == HttpContext.User.Identity.Name)
@@ -28,6 +33,13 @@ namespace keepr.controllers
       }
       return Ok(_repo.getAnotherUsersVaults(userId));
     }
+    //update vault privacy
+    [HttpPut("{Id}")]
+    public ActionResult<Vault> put([FromBody] Vault value)
+    {
+      return _repo.UpdateVault(value);
+    }
+
     //add a new vault
     [HttpPost]
     public ActionResult<Vault> Post([FromBody] Vault value)
