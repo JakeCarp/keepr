@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container-fluid">
     <div class="row">
       <h1 class="col">See Something You Like?</h1>
     </div>

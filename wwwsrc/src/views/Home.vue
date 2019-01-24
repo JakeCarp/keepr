@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="container-fluid">
     <div class="row">
       <b-btn class="btn btn-dark col" v-b-modal.newKeep>New Keep</b-btn>
       <b-modal hide-footer id="newKeep" title="Create A New Keep">

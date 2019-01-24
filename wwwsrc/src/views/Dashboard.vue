@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container-fluid">
     <div class="row">
       <div class="col-3">
         <button v-if="targetUser == user.username" class="btn btn-dark">New Keep</button>
