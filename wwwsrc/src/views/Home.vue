@@ -12,7 +12,15 @@
         </div>
         <div class="row card-footer">
           <i class="fas fa-eye col-4"> {{keep.views}}</i>
-          <i class="fas fa-share col-4"> {{keep.shares}}</i>
+          <i @click="modalShow = !modalShow" class="fas fa-share col-4"> {{keep.shares}}</i>
+          <b-modal v-model="modalShow" :id="keep.name" hide-footer hide-header>
+            <!-- <a :href="facebookUrl + !INSERT HEROKU URL AFTER DEPLOYMENT!/keep.id " target="_blank"></a> -->
+            <i class="modalContent fab fa-facebook-square"> Share To FaceBook</i>
+            <!-- <a :href="twitterUrl + !INSERT HEROKU URL AFTER DEPLOYMENT!/keep.id"></a> -->
+            <i class="modalContent fab fa-twitter-square">Share To Twitter</i>
+            <!-- <a :href="linkedinUrl + !INSERT HEROKU URL AFTER DEPLOYMENT!/keep.id"></a> -->
+            <i class="modalContent fab fa-linkedin"> Share To Linkedin</i>
+          </b-modal>
           <i class="fas fa-folder-plus col-4"> {{keep.keeps}}</i>
         </div>
       </div>
@@ -45,7 +53,10 @@
     },
     data() {
       return {
-
+        modalShow: false,
+        facebookUrl: "https://www.facebook.com/sharer/sharer.php?u=",
+        twitterUrl: "https://twitter.com/share?url=",
+        linkedinUrl: "https://www.linkedin.com/shareArticle?mini=true&url="
       }
     },
     components: {
@@ -63,6 +74,10 @@
   i {
     font-size: 2rem;
     cursor: pointer;
+  }
+
+  .modalContent {
+    color: #343a40;
   }
 
   img {
