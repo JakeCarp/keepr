@@ -26,8 +26,8 @@ export default new Vuex.Store({
     targetKeep: {},
     vaults: [],
     userKeeps: [],
-    userVaults: [],
-    targetVault: [],
+    targetVault: {},
+    vaultKeeps: [],
     targetUser: ''
   },
   mutations: {
@@ -59,6 +59,9 @@ export default new Vuex.Store({
     },
     SetTargetVault(state, vault) {
       state.targetVault = vault
+    },
+    SetVaultKeeps(state, vaultkeeps) {
+      state.vaultKeeps = vaultkeeps
     }
     //#endregion
   },
@@ -79,6 +82,7 @@ export default new Vuex.Store({
       auth.get('authenticate')
         .then(res => {
           commit('setUser', res.data)
+          dispatch("GetUserVaults", res.data.id)
         })
         .catch(e => {
           console.log('not authenticated')
@@ -89,6 +93,7 @@ export default new Vuex.Store({
         .then(res => {
           commit('setUser', res.data)
           router.push({ name: 'home' })
+          dispatch("GetUserVaults", res.data.id)
         })
         .catch(e => {
           console.log('Login Failed')
@@ -191,7 +196,7 @@ export default new Vuex.Store({
     AddVaultKeep({ commit, dispatch }, payload) {
       api.post('vaultkeeps', payload)
         .then(res => {
-          dispatch('GetKeepsByVaultId', payload)
+          window.alert('keep added to vault!')
         })
     },
     DeleteVaultKeep({ commit, dispatch }, vaultkeep) {
@@ -201,10 +206,16 @@ export default new Vuex.Store({
         })
     },
     //#endregion
+    //routing Actions
+    //#region 
     //route to user dash
     RouteToDash({ commit, dispatch }, payload) {
       commit('SetTargetUser', payload.targetname)
       router.push({ name: 'dashboard', params: { userId: payload.userId } })
+    },
+    RouteToVault({ commit, dispatch }, vaultId) {
+      router.push({ name: 'vault', params: { vaultId: vaultId } })
     }
+    //#endregion
   }
 })

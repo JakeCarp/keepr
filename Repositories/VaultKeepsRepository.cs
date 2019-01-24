@@ -18,7 +18,7 @@ namespace keepr.Repositories
     {
       return _db.Query<Keep>($@"
       SELECT * FROM VaultKeeps vk
-      INNER JOIN keep k ON k.id = vk.keepId
+      INNER JOIN keeps k ON k.id = vk.keepId
       WHERE (vaultId = @id);
       ", new { id });
     }
@@ -28,7 +28,7 @@ namespace keepr.Repositories
     {
       int id = _db.ExecuteScalar<int>(@"
       INSERT INTO vaultkeeps(keepId, vaultId, userId)
-      VALUES(@keepId, @vaultId, @userId);
+      VALUES(@KeepId, @VaultId, @UserId);
       SELECT LAST_INSERT_ID();
       ", vk);
       vk.Id = id;

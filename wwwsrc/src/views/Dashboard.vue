@@ -2,16 +2,34 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-3">
-        <b-btn v-if="targetUser == user.username" class="btn btn-dark" v-b-modal.newKeep>New Keep</b-btn>
-        <b-modal hide-footer id="newKeep" title="Create A New Keep">
-          <newkeep />
+        <b-btn v-if="targetUser == user.username" class="btn btn-dark" @click="modal3Show = !modal3Show">New Keep</b-btn>
+        <b-modal v-model="modal3Show" hide-footer id="newKeep" title="Create A New Keep">
+          <form @submit.prevent="AddNewKeep(user.username)">
+            <div class="form-group row">
+              <label class="col-3" for="name">Keep Title :</label>
+              <input class="col-8" type="text" name="name" v-model="keep.name" placeholder="Title">
+            </div>
+            <div class="form-group row">
+              <label for="text" class="col-3">Keep Description :</label>
+              <input name="text" class="col-8" type="text-field" v-model="keep.text" placeholder="Description">
+            </div>
+            <div class="form-group row">
+              <label for="imgurl" class="col-3">Image URL :</label>
+              <input name="imgurl" class="col-8" type="url" v-model="keep.imgUrl" placeholder="Image URL">
+            </div>
+            <div class="form-group row">
+              <label for="isprivate" class="col-3">Private?</label>
+              <input name="isprivate" type="checkbox" v-model="keep.isPrivate">
+            </div>
+            <button @click="modal3Show = !modal3Show" class="btn btn-dark" type="submit">Create New Keep</button>
+          </form>
         </b-modal>
       </div>
       <h1 class="col-6" v-if="this.$route.params.userId == user.id && targetUser == user.username">Your Keeps</h1>
       <h1 class="col-6" v-if="targetUser != user.username">{{targetUser}}'s Keeps</h1>
       <div class="col-3">
-        <b-btn v-b-modal.newVault v-if="targetUser == user.username" class="btn btn-dark">New Vault</b-btn>
-        <b-modal hide-footer id="newVault" title="Create A New Vault">
+        <b-btn @click="modal2Show =!modal2Show" v-if="targetUser == user.username" class="btn btn-dark">New Vault</b-btn>
+        <b-modal hide-footer v-model="modal2Show" id="newVault" title="Create A New Vault">
           <form @submit.prevent="createVault()">
             <div class="form-group row">
               <label class="col-3" for="name">Title : </label>
@@ -29,7 +47,7 @@
               <label class="col-3" for="isPrivate">Private?</label>
               <input type="checkbox" name="isPrivate" v-model="newVault.isPrivate">
             </div>
-            <button class="btn btn-dark" type="submit">Create New Vault</button>
+            <button @click="modal2Show = !modal2Show" class="btn btn-dark" type="submit">Create New Vault</button>
           </form>
         </b-modal>
       </div>
@@ -130,7 +148,11 @@
         this.$store.dispatch('AddVault', this.newVault)
       },
       viewTargetVault(vaultId) {
-        this.$route.push({ name: 'vault', params: { vaultId: vaultId } })
+        this.$store.dispatch('RouteToVault', vaultId)
+      },
+      AddNewKeep(username) {
+        this.keep.creatorName = username
+        this.$store.dispatch('AddKeep', this.keep)
       }
     },
     components: {
@@ -139,10 +161,18 @@
     data() {
       return {
         modalShow: false,
+        modal2Show: false,
+        modal3Show: false,
         newVault: {
           name: '',
           description: '',
           imgUrl: '',
+        },
+        keep: {
+          name: "",
+          text: "",
+          imgUrl: "",
+          creatorName: ""
         }
       }
     },

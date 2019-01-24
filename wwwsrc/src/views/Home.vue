@@ -1,8 +1,8 @@
 <template>
   <div class="container-fluid">
     <div class="row">
-      <b-btn class="btn btn-dark col" v-b-modal.newKeep>New Keep</b-btn>
-      <b-modal hide-footer id="newKeep" title="Create A New Keep">
+      <b-btn class="btn btn-dark col" @click="modal3Show = !modal3Show">New Keep</b-btn>
+      <b-modal hide-footer v-model="modal3Show" id="newKeep" title="Create A New Keep">
         <login v-if="!user.id" />
         <newkeep v-if="user.id" />
       </b-modal>
@@ -38,7 +38,21 @@
               <h3 @click="addShare(keep)" class="modalContent col-7">Share To Linkedin</h3>
             </div>
           </b-modal>
-          <i class="fas fa-folder-plus col-4"> {{keep.keeps}}</i>
+          <b-btn @click="showVKModal(keep.id)">
+            <i class="fas fa-folder-plus col-4"> {{keep.keeps}}</i>
+          </b-btn>
+          <b-modal :ref="'vkModal' + keep.id" hide-footer hide-header>
+            <div class="row">
+              <h3 class="modalContent">Add Keep to Which Vault(s)</h3>
+            </div>
+            <form @submit.prevent="createVaultKeeps(keep)">
+              <div v-for="vault in vaults" class="form-group row">
+                <input type="checkbox" :name="vault.id" v-model="payload[vault.id]">
+                <label class="modalContent" :for="vault.id">{{vault.name}}</label>
+              </div>
+              <button type="submit" class="btn btn-dark">Add to Vault(s)</button>
+            </form>
+          </b-modal>
         </div>
       </div>
     </div>
@@ -60,14 +74,20 @@
       },
       user() {
         return this.$store.state.user
+      },
+      vaults() {
+        return this.$store.state.vaults
       }
     },
     data() {
       return {
+        modal2Show: false,
         modalShow: false,
+        modal3Show: false,
         facebookUrl: "https://www.facebook.com/sharer/sharer.php?u=",
         twitterUrl: "https://twitter.com/share?url=",
-        linkedinUrl: "https://www.linkedin.com/shareArticle?mini=true&url="
+        linkedinUrl: "https://www.linkedin.com/shareArticle?mini=true&url=",
+        payload: {}
       }
     },
     components: {
@@ -75,6 +95,14 @@
       newkeep,
     },
     methods: {
+      showVKModal(id) {
+        let mod = 'vkModal' + id
+        this.$refs[mod][0].show()
+      },
+      hideVKModal(id) {
+        let mod = 'vkModal' + id
+        this.$refs[mod][0].hide()
+      },
       RouteToDash(userId, username) {
         this.$store.dispatch('RouteToDash', { userId: userId, targetname: username })
       },
@@ -86,6 +114,22 @@
         keep.views++
         this.$store.dispatch('UpdateKeep', keep)
         this.$router.push({ name: 'keep', params: { keepId: keep.id } })
+      },
+      createVaultKeeps(keep) {
+        debugger
+        console.log(this.payload)
+        let counter = 0
+        //add vault keep
+        for (let vid in this.payload) {
+          if (this.payload[vid]) {
+            counter++
+            this.$store.dispatch('AddVaultKeep', { keepId: keep.id, vaultId: vid })
+          }
+        }
+        //increment keeps prop on keep
+        keep.keeps += counter
+        this.$store.dispatch('UpdateKeep', keep)
+
       }
     },
   };
