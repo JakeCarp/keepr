@@ -8,6 +8,8 @@ import dashboard from './views/Dashboard.vue'
 import keep from './views/Keep.vue'
 // @ts-ignore
 import vault from './views/Vault.vue'
+// @ts-ignore
+import about from './views/About.vue'
 
 Vue.use(Router)
 
@@ -32,6 +34,11 @@ export default new Router({
       path: '/vault/:vaultId',
       name: 'vault',
       component: vault
+    },
+    {
+      path: '/about',
+      name: 'about',
+      component: about
     }
   ]
 })

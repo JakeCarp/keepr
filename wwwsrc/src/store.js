@@ -135,6 +135,7 @@ export default new Vuex.Store({
       api.post('keeps', payload)
         .then(res => {
           dispatch('GetUserKeeps', res.data.userId)
+          dispatch('GetAllKeeps')
         })
     },
     //update Keep
