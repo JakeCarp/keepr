@@ -1,7 +1,8 @@
 <template>
   <div class="container-fluid">
     <div class="row">
-      <b-btn class="btn btn-dark col-sm-12 col-md" @click="modal3Show = !modal3Show">New Keep</b-btn>
+      <b-btn v-if="user.id" class="btn btn-dark col-sm-12 col-md" @click="modal3Show = !modal3Show">New Keep</b-btn>
+      <b-btn v-if="!user.id" class="btn btn-dark col-sm-12 col-md" @click="modal3Show = !modal3Show">Login</b-btn>
       <b-modal hide-footer v-model="modal3Show" id="newKeep" title="Create A New Keep">
         <login v-if="!user.id" />
         <newkeep v-if="user.id" />
@@ -49,7 +50,7 @@
                 <input type="checkbox" :name="vault.id" v-model="payload[vault.id]">
                 <label class="modalContent col-3" :for="vault.id">{{vault.name}}</label>
               </div>
-              <button type="submit" class="btn btn-dark">Add to Vault(s)</button>
+              <button type="submit" @click="hideVKModal(keep.id)" class="btn btn-dark">Add to Vault(s)</button>
             </form>
           </b-modal>
         </div>

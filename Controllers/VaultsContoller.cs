@@ -53,14 +53,10 @@ namespace keepr.controllers
       return BadRequest("Unauthorized");
     }
     //Delete a vault
-    [HttpDelete]
-    public ActionResult<string> Delete(Vault value)
+    [HttpDelete("{id}")]
+    public ActionResult<string> Delete(int id)
     {
-      if (value.UserId != HttpContext.User.Identity.Name)
-      {
-        return BadRequest("unauthorized");
-      }
-      if (_repo.DeleteVault(value))
+      if (_repo.DeleteVault(id))
       {
         return Ok("Successfully Deleted");
       }

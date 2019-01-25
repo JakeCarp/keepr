@@ -54,12 +54,7 @@ namespace keepr.controllers
     [HttpDelete("{id}")]
     public ActionResult<string> Delete(int id)
     {
-      Keep value = _repo.GetById(id);
-      if (value.UserId != HttpContext.User.Identity.Name)
-      {
-        return BadRequest("Cannot Delete Keeps That Don't Belong To You!");
-      }
-      if (_repo.DeleteKeep(value.Id))
+      if (_repo.DeleteKeep(id))
       {
         return Ok("Successfully deleted!");
       }

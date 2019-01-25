@@ -96,7 +96,7 @@
                 <input type="checkbox" :name="vault.id" v-model="payload[vault.id]">
                 <label class="modalContent col-3" :for="vault.id">{{vault.name}}</label>
               </div>
-              <button type="submit" class="btn btn-dark">Add to Vault(s)</button>
+              <button type="submit" @click="hideVKModal(keep.id)" class="btn btn-dark">Add to Vault(s)</button>
             </form>
           </b-modal>
         </div>
@@ -107,14 +107,14 @@
       <h1 class="col" v-if="targetUser != user.username">{{targetUser}}'s Vaults</h1>
     </div>
     <div class="row">
-      <div v-for="vault in vaults" class="card bg-dark text-white col-lg-4 col-md-6 col-sm-12" @click="viewTargetVault(vault.id)">
+      <div v-for="vault in vaults" class="card bg-dark text-white col-lg-4 col-md-6 col-sm-12">
         <div class="card-header row">
           <i v-if="!vault.isPrivate && user.id == vault.userId" class="fas fa-lock-open col-4" @click="togglePrivateVault(vault)"></i>
           <i v-if="vault.isPrivate" class="fas fa-lock col-4" @click="togglePrivateVault(vault)"></i>
-          <h3 class="col-4">{{vault.name}}</h3>
+          <h3 class="col-4" @click="viewTargetVault(vault.id)">{{vault.name}}</h3>
           <i v-if="user.id == vault.userId" class="fas fa-trash col-4" @click="deletevault(vault)"></i>
         </div>
-        <img :src="vault.imgUrl" class="card-img-top">
+        <img :src="vault.imgUrl" class="card-img-top" @click="viewTargetVault(vault.id)">
         <h3 class="card-footer">{{vault.description}}</h3>
       </div>
     </div>

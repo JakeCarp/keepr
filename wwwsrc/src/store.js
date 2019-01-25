@@ -134,7 +134,7 @@ export default new Vuex.Store({
     AddKeep({ commit, dispatch }, payload) {
       api.post('keeps', payload)
         .then(res => {
-          dispatch('GetAllKeeps')
+          dispatch('GetUserKeeps', res.data.userId)
         })
     },
     //update Keep
@@ -146,8 +146,10 @@ export default new Vuex.Store({
     },
     //delete Keep
     DeleteKeep({ commit, dispatch }, keep) {
-      api.delete('keeps/' + keep.id)
-      dispatch('GetUserKeeps', keep.userId)
+      api.delete('keeps/' + keep.id, keep.id)
+        .then(res => {
+          dispatch('GetUserKeeps', keep.userId)
+        })
     },
     //#endregion
     //Vualt Actions
@@ -178,7 +180,7 @@ export default new Vuex.Store({
         })
     },
     DeleteVault({ commit, dispatch }, vault) {
-      api.delete('vaults', vault)
+      api.delete('vaults/' + vault.id, vault.id)
         .then(res => {
           dispatch('GetUserVaults', vault.userId)
         })

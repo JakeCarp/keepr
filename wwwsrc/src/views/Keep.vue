@@ -33,7 +33,19 @@
               <h3 @click="addShare(targetkeep)" class="modalContent col-7">Share To Linkedin</h3>
             </div>
           </b-modal>
-          <i class="fas fa-folder-plus col-4"> {{targetkeep.keeps}}</i>
+          <i @click="showVKModal(targetkeep.id)" class="fas fa-folder-plus col-4"> {{targetkeep.keeps}}</i>
+          <b-modal :ref="'vkModal' + targetkeep.id" hide-footer hide-header>
+            <div class="row">
+              <h3 class="modalContent">Add Keep to Which Vault(s)</h3>
+            </div>
+            <form @submit.prevent="createVaultKeeps(targetkeep)">
+              <div v-for="vault in vaults" class="form-group row">
+                <input type="checkbox" :name="vault.id" v-model="payload[vault.id]">
+                <label class="modalContent col-3" :for="vault.id">{{vault.name}}</label>
+              </div>
+              <button type="submit" @click="hideVKModal(targetkeep.id)" class="btn btn-dark">Add to Vault(s)</button>
+            </form>
+          </b-modal>
         </div>
       </div>
     </div>
@@ -51,12 +63,38 @@
       },
       targetkeep() {
         return this.$store.state.targetKeep
+      },
+      vaults() {
+        return this.$store.state.vaults
       }
     },
     methods: {
       addShare(keep) {
         keep.shares++
         this.$store.dispatch('UpdateKeep', keep)
+      },
+      showVKModal(id) {
+        let mod = 'vkModal' + id
+        this.$refs[mod].show()
+      },
+      hideVKModal(id) {
+        let mod = 'vkModal' + id
+        this.$refs[mod].hide()
+      },
+      createVaultKeeps(keep) {
+        console.log(this.payload)
+        let counter = 0
+        //add vault keep
+        for (let vid in this.payload) {
+          if (this.payload[vid]) {
+            counter++
+            this.$store.dispatch('AddVaultKeep', { keepId: keep.id, vaultId: vid })
+          }
+        }
+        //increment keeps prop on keep
+        keep.keeps += counter
+        this.$store.dispatch('UpdateKeep', keep)
+
       }
     },
     data() {
@@ -64,7 +102,8 @@
         modalShow: false,
         facebookUrl: "https://www.facebook.com/sharer/sharer.php?u=",
         twitterUrl: "https://twitter.com/share?url=",
-        linkedinUrl: "https://www.linkedin.com/shareArticle?mini=true&url="
+        linkedinUrl: "https://www.linkedin.com/shareArticle?mini=true&url=",
+        payload: {}
       }
     },
   }
