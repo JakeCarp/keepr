@@ -12,8 +12,12 @@ namespace keepr.Repositories
     {
       _db = db;
     }
-
-    //Get Cards By DeckId
+    //Get All user VaultKeeps
+    public IEnumerable<VaultKeep> GetUserVaultKeeps(int vaultId)
+    {
+      return _db.Query<VaultKeep>($"SELECT * FROM VaultKeeps WHERE vaultId = @vaultId", new { vaultId });
+    }
+    //Get keeps By VaultId
     public IEnumerable<Keep> GetKeepsByVaultId(int id)
     {
       return _db.Query<Keep>($@"
@@ -38,7 +42,7 @@ namespace keepr.Repositories
     //deleteDeckCard
     public bool DeleteVaultKeep(VaultKeep vk)
     {
-      int success = _db.Execute(@"DELETE FROM vaultkeeps WHERE keepId = @cardId AND vaultId = @deckId", vk);
+      int success = _db.Execute(@"DELETE FROM vaultkeeps WHERE keepId = @keepId AND vaultId = @vaultId", vk);
       return success != 0;
     }
   }

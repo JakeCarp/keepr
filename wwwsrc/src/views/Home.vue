@@ -1,26 +1,27 @@
 <template>
   <div class="container-fluid">
     <div class="row">
-      <b-btn class="btn btn-dark col" @click="modal3Show = !modal3Show">New Keep</b-btn>
+      <b-btn class="btn btn-dark col-sm-12 col-md" @click="modal3Show = !modal3Show">New Keep</b-btn>
       <b-modal hide-footer v-model="modal3Show" id="newKeep" title="Create A New Keep">
         <login v-if="!user.id" />
         <newkeep v-if="user.id" />
       </b-modal>
-      <h1 class="col greeting">Today Is a New Day {{user.username}}</h1>
-      <button class="btn btn-dark col" @click="RouteToDash(user.id, user.username)">My Dashboard</button>
+      <h1 class="col-sm-12 col-md greeting">Today Is a New Day {{user.username}}</h1>
+      <button class="btn btn-dark col-sm-12 col-md" @click="RouteToDash(user.id, user.username)">My Dashboard</button>
     </div>
-    <div class="card-deck">
-      <div v-for="keep in keeps" class="card col-4 text-white bg-dark border-info">
+    <div class="row">
+
+      <div v-for="keep in keeps" class="card col-lg-4 col-md-6 col-sm-12  text-white bg-dark border-info">
         <h1 @click="viewKeep(keep)" class=" viewkeep card-header">{{keep.name}}</h1>
-        <div class="card-img-top">
+        <div class="card-img-top img-fluid">
           <img @click="viewKeep(keep)" class="viewkeep" :src="keep.imgUrl" />
         </div>
         <div class="card-body">
           <h4 @click="RouteToDash(keep.userId, keep.creatorName)" class="card-subtitle viewkeep">{{keep.creatorName}}</h4>
         </div>
         <div class="row card-footer">
-          <i class="fas fa-eye col-4"> {{keep.views}}</i>
-          <i @click="modalShow = !modalShow" class="fas fa-share col-4"> {{keep.shares}}</i>
+          <i class="fas fa-eye col"> {{keep.views}}</i>
+          <i @click="modalShow = !modalShow" class="fas fa-share col"> {{keep.shares}}</i>
           <b-modal v-model="modalShow" :id="keep.name" hide-footer hide-header>
             <div class="row">
               <!-- <a :href="facebookUrl + !INSERT HEROKU URL AFTER DEPLOYMENT!/keep.id " target="_blank"></a> -->
@@ -38,9 +39,7 @@
               <h3 @click="addShare(keep)" class="modalContent col-7">Share To Linkedin</h3>
             </div>
           </b-modal>
-          <b-btn @click="showVKModal(keep.id)">
-            <i class="fas fa-folder-plus col-4"> {{keep.keeps}}</i>
-          </b-btn>
+          <i @click="showVKModal(keep.id)" class="fas fa-folder-plus col-4"> {{keep.keeps}}</i>
           <b-modal :ref="'vkModal' + keep.id" hide-footer hide-header>
             <div class="row">
               <h3 class="modalContent">Add Keep to Which Vault(s)</h3>
@@ -48,7 +47,7 @@
             <form @submit.prevent="createVaultKeeps(keep)">
               <div v-for="vault in vaults" class="form-group row">
                 <input type="checkbox" :name="vault.id" v-model="payload[vault.id]">
-                <label class="modalContent" :for="vault.id">{{vault.name}}</label>
+                <label class="modalContent col-3" :for="vault.id">{{vault.name}}</label>
               </div>
               <button type="submit" class="btn btn-dark">Add to Vault(s)</button>
             </form>
@@ -135,8 +134,8 @@
   };
 </script>
 <style>
-  html {
-    width: 101%;
+  .keepsButton {
+    display: flex;
   }
 
   .btn {

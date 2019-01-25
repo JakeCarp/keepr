@@ -62,7 +62,7 @@ export default new Vuex.Store({
     },
     SetVaultKeeps(state, vaultkeeps) {
       state.vaultKeeps = vaultkeeps
-    }
+    },
     //#endregion
   },
   actions: {
@@ -199,8 +199,9 @@ export default new Vuex.Store({
           window.alert('keep added to vault!')
         })
     },
-    DeleteVaultKeep({ commit, dispatch }, vaultkeep) {
-      api.delete('vaultkeeps/' + vaultkeep.id, vaultkeep)
+    DeleteVaultKeep({ commit, dispatch }, payload) {
+      debugger
+      api.delete('vaultkeeps/', payload)
         .then(res => {
           dispatch('GetKeepsByVaultId')
         })

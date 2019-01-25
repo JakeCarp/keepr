@@ -1,8 +1,8 @@
 <template>
   <div class="container-fluid">
     <div class="row">
-      <div class="col-3">
-        <b-btn v-if="targetUser == user.username" class="btn btn-dark" @click="modal3Show = !modal3Show">New Keep</b-btn>
+      <div class="col-lg-3 col-sm-12">
+        <b-btn v-if="targetUser == user.username" class="btn btn-dark " @click="modal3Show = !modal3Show">New Keep</b-btn>
         <b-modal v-model="modal3Show" hide-footer id="newKeep" title="Create A New Keep">
           <form @submit.prevent="AddNewKeep(user.username)">
             <div class="form-group row">
@@ -25,9 +25,10 @@
           </form>
         </b-modal>
       </div>
-      <h1 class="col-6" v-if="this.$route.params.userId == user.id && targetUser == user.username">Your Keeps</h1>
-      <h1 class="col-6" v-if="targetUser != user.username">{{targetUser}}'s Keeps</h1>
-      <div class="col-3">
+      <h1 class="col-lg-6 col-sm-12" v-if="this.$route.params.userId == user.id && targetUser == user.username">Your
+        Keeps</h1>
+      <h1 class="col-lg-6 col-sm-12" v-if="targetUser != user.username">{{targetUser}}'s Keeps</h1>
+      <div class="col-lg-3 col-sm-12">
         <b-btn @click="modal2Show =!modal2Show" v-if="targetUser == user.username" class="btn btn-dark">New Vault</b-btn>
         <b-modal hide-footer v-model="modal2Show" id="newVault" title="Create A New Vault">
           <form @submit.prevent="createVault()">
@@ -52,8 +53,8 @@
         </b-modal>
       </div>
     </div>
-    <div class="card-deck">
-      <div v-for="keep in userKeeps" class="card col-4 text-white bg-dark border-info">
+    <div class="row">
+      <div v-for="keep in userKeeps" class="card col-lg-4 col-md-6 col-sm-12 text-white bg-dark border-info">
         <div class="card-header row">
           <i v-if="!keep.isPrivate && user.id == keep.userId" class="fas fa-lock-open col-4" @click="togglePrivate(keep)"></i>
           <i v-if="keep.isPrivate" class="fas fa-lock col-4" @click="togglePrivate(keep)"></i>
@@ -93,8 +94,8 @@
       <h1 class="col" v-if="this.$route.params.userId == user.id && targetUser == user.username">Your Vaults</h1>
       <h1 class="col" v-if="targetUser != user.username">{{targetUser}}'s Vaults</h1>
     </div>
-    <div class="card-deck">
-      <div v-for="vault in vaults" class="card bg-dark text-white col-4" @click="viewTargetVault(vault.id)">
+    <div class="row">
+      <div v-for="vault in vaults" class="card bg-dark text-white col-lg-4 col-md-6 col-sm-12" @click="viewTargetVault(vault.id)">
         <div class="card-header row">
           <i v-if="!vault.isPrivate && user.id == vault.userId" class="fas fa-lock-open col-4" @click="togglePrivateVault(vault)"></i>
           <i v-if="vault.isPrivate" class="fas fa-lock col-4" @click="togglePrivateVault(vault)"></i>

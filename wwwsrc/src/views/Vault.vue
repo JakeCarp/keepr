@@ -7,9 +7,7 @@
     <div class="card-deck">
       <div v-for="keep in keeps" class="card col-4 text-white bg-dark border-info">
         <div class="card-header row">
-          <i v-if="!keep.isPrivate && user.id == keep.userId" class="fas fa-lock-open col-4" @click="togglePrivate(keep)"></i>
-          <i v-if="keep.isPrivate" class="fas fa-lock col-4" @click="togglePrivate(keep)"></i>
-          <i v-if="user.id == keep.userId" class="fas fa-trash col-4 offset-4" @click="deletekeep(keep)"></i>
+          <i class="fas fa-trash col" @click="removekeep(keep)"></i>
         </div>
         <div class="card-img-top">
           <img :src="keep.imgUrl" />
@@ -56,10 +54,29 @@
       },
       keeps() {
         return this.$store.state.vaultKeeps
+      },
+      user() {
+        return this.$store.state.user
+      },
+      vaultkeeps() {
+        return this.$store.state.userVaultKeeps
       }
     },
     components: {
 
-    }
+    },
+    data() {
+      return {
+        modalShow: false,
+      }
+    },
+    methods: {
+      removekeep(keep, vaultkeep) {
+        debugger
+        let vaultId = parseInt("10", this.$route.params.vaultId)
+        keep.keeps--
+        this.$store.dispatch('DeleteVaultKeep', { vaultId: vaultId, keepId: keep.id })
+      }
+    },
   }
 </script>
