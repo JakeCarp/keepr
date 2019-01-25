@@ -115,7 +115,6 @@
         this.$router.push({ name: 'keep', params: { keepId: keep.id } })
       },
       createVaultKeeps(keep) {
-        debugger
         console.log(this.payload)
         let counter = 0
         //add vault keep

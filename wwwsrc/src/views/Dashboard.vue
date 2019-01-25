@@ -86,7 +86,19 @@
               <h3 @click="addShare(keep)" class="modalContent col-7">Share To Linkedin</h3>
             </div>
           </b-modal>
-          <i class="fas fa-folder-plus col-4"> {{keep.keeps}}</i>
+          <i @click="showVKModal(keep.id)" class="fas fa-folder-plus col-4"> {{keep.keeps}}</i>
+          <b-modal :ref="'vkModal' + keep.id" hide-footer hide-header>
+            <div class="row">
+              <h3 class="modalContent">Add Keep to Which Vault(s)</h3>
+            </div>
+            <form @submit.prevent="createVaultKeeps(keep)">
+              <div v-for="vault in vaults" class="form-group row">
+                <input type="checkbox" :name="vault.id" v-model="payload[vault.id]">
+                <label class="modalContent col-3" :for="vault.id">{{vault.name}}</label>
+              </div>
+              <button type="submit" class="btn btn-dark">Add to Vault(s)</button>
+            </form>
+          </b-modal>
         </div>
       </div>
     </div>
@@ -131,6 +143,14 @@
       }
     },
     methods: {
+      showVKModal(id) {
+        let mod = 'vkModal' + id
+        this.$refs[mod][0].show()
+      },
+      hideVKModal(id) {
+        let mod = 'vkModal' + id
+        this.$refs[mod][0].hide()
+      },
       togglePrivate(keep) {
         keep.isPrivate = !keep.isPrivate
         this.$store.dispatch("UpdateKeep", keep)
@@ -154,6 +174,21 @@
       AddNewKeep(username) {
         this.keep.creatorName = username
         this.$store.dispatch('AddKeep', this.keep)
+      },
+      createVaultKeeps(keep) {
+        console.log(this.payload)
+        let counter = 0
+        //add vault keep
+        for (let vid in this.payload) {
+          if (this.payload[vid]) {
+            counter++
+            this.$store.dispatch('AddVaultKeep', { keepId: keep.id, vaultId: vid })
+          }
+        }
+        //increment keeps prop on keep
+        keep.keeps += counter
+        this.$store.dispatch('UpdateKeep', keep)
+
       }
     },
     components: {
@@ -174,7 +209,8 @@
           text: "",
           imgUrl: "",
           creatorName: ""
-        }
+        },
+        payload: {}
       }
     },
   }
