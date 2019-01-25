@@ -50,6 +50,7 @@
 
   .home-font {
     font-size: 26px;
+    color: white;
   }
 
   .navi a {

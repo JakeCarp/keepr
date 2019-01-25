@@ -39,10 +39,10 @@ namespace keepr.Controllers
     }
 
     // DELETE api/values/5
-    [HttpDelete("{id}")]
-    public ActionResult<string> Delete(VaultKeep vk)
+    [HttpDelete("{keepId}/{vaultId}")]
+    public ActionResult<string> Delete(int keepId, int vaultId)
     {
-      if (_repo.DeleteVaultKeep(vk))
+      if (_repo.DeleteVaultKeep(keepId, vaultId))
       {
         return Ok("Successfully Deleted!");
       }

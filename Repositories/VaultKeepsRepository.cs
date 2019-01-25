@@ -40,9 +40,9 @@ namespace keepr.Repositories
     }
 
     //deleteDeckCard
-    public bool DeleteVaultKeep(VaultKeep vk)
+    public bool DeleteVaultKeep(int keepId, int vaultId)
     {
-      int success = _db.Execute(@"DELETE FROM vaultkeeps WHERE keepId = @keepId AND vaultId = @vaultId", vk);
+      int success = _db.Execute(@"DELETE FROM vaultkeeps WHERE keepId = @keepId AND vaultId = @vaultId", new { keepId, vaultId });
       return success != 0;
     }
   }

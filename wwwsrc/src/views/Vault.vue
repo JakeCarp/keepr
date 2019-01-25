@@ -58,9 +58,6 @@
       user() {
         return this.$store.state.user
       },
-      vaultkeeps() {
-        return this.$store.state.userVaultKeeps
-      }
     },
     components: {
 
@@ -71,8 +68,7 @@
       }
     },
     methods: {
-      removekeep(keep, vaultkeep) {
-        debugger
+      removekeep(keep) {
         let vaultId = parseInt("10", this.$route.params.vaultId)
         keep.keeps--
         this.$store.dispatch('DeleteVaultKeep', { vaultId: vaultId, keepId: keep.id })
