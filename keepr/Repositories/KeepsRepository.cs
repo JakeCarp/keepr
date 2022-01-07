@@ -62,6 +62,27 @@ namespace keepr.Repositories
             }).FirstOrDefault();
         }
 
+        internal void ChangeKeeps(Keep keep)
+        {
+            var sql = @"
+            UPDATE keeps
+                SET
+                keeps = @Keeps
+            WHERE id = @id LIMIT 1
+            ;";
+            var rowsAffected = _db.Execute(sql, keep);
+            if (rowsAffected > 1)
+            {
+
+                //alert sysadmin
+                throw new Exception("THIS IS REALLY BAD");
+            }
+            if (rowsAffected < 1)
+            {
+                throw new Exception("Updated Failed, Likely Bad Id");
+            }
+        }
+
         internal Keep Update(Keep keep)
         {
             var sql = @"
@@ -83,6 +104,27 @@ namespace keepr.Repositories
                 throw new Exception("Updated Failed, Likely Bad Id");
             }
             return keep;
+        }
+
+        internal void ChangeViews(Keep keep)
+        {
+            var sql = @"
+            UPDATE keeps
+                SET
+                views = @Views
+            WHERE id = @id LIMIT 1
+            ;";
+            var rowsAffected = _db.Execute(sql, keep);
+            if (rowsAffected > 1)
+            {
+
+                //alert sysadmin
+                throw new Exception("THIS IS REALLY BAD");
+            }
+            if (rowsAffected < 1)
+            {
+                throw new Exception("Updated Failed, Likely Bad Id");
+            }
         }
 
         internal void Delete(int keepId)

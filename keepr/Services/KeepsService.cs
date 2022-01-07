@@ -44,11 +44,25 @@ namespace keepr.Services
             return _repo.Update(keep);
         }
 
+        internal void incrementKeeps(int keepId)
+        {
+            Keep keep = GetKeepById(keepId);
+            keep.Keeps++;
+            _repo.ChangeKeeps(keep);
+        }
+
         internal string DeleteKeep(string userId, int keepId)
         {
             var keep = isKeepOwner(userId, keepId);
             _repo.Delete(keepId);
             return "Keep Deleted";
+        }
+
+        internal void decrementKeeps(int keepId)
+        {
+            Keep keep = GetKeepById(keepId);
+            keep.Keeps--;
+            _repo.ChangeKeeps(keep);
         }
 
         internal Keep isKeepOwner(string userId, int keepId)
@@ -62,9 +76,11 @@ namespace keepr.Services
         }
         internal Keep LikeKeep(Keep keep)
         {
-            keep.Views += 1;
-            _repo.Update(keep);
+            keep.Views--;
+            _repo.ChangeViews(keep);
             return keep;
         }
+
+
     }
 }

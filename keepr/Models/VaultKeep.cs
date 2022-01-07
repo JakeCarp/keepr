@@ -12,4 +12,10 @@ namespace keepr.Models
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }
+
+    public class VaultKeepViewModel : VaultKeep
+    {
+        public Account Creator { get; set; }
+        public Keep Keep { get; set; }
+    }
 }
