@@ -13,7 +13,7 @@ namespace keepr.Models
         public int Shares { get; set; }
         public int Keeps { get; set; }
 
-        public Account creator { get; set; }
+        public Account Creator { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }
