@@ -62,6 +62,16 @@ namespace keepr.Repositories
             }).FirstOrDefault();
         }
 
+        internal List<Keep> GetKeepsByUserId(string id)
+        {
+            var sql = @"
+            SELECT *
+            FROM keeps
+            WHERE creatorId = @id
+            ;";
+            return _db.Query<Keep>(sql, new { id }).ToList();
+        }
+
         internal void ChangeKeeps(Keep keep)
         {
             var sql = @"

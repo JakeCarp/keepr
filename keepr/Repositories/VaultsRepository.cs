@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Dapper;
@@ -9,6 +10,12 @@ namespace keepr.Repositories
     public class VaultsRepository
     {
         private readonly IDbConnection _db;
+
+        public VaultsRepository(IDbConnection db)
+        {
+            _db = db;
+        }
+
         internal Vault Create(Vault newVault)
         {
             var sql = @"
@@ -57,6 +64,17 @@ namespace keepr.Repositories
                 throw new Exception("Update Failed, Likely Bad Id");
             }
             return vault;
+        }
+
+        internal List<Vault> GetUserVaults(string queryid)
+        {
+            var sql = @"
+            SELECT
+            *   
+            FROM vaults
+            WHERE v.creatorId = @queryid
+            ;";
+            return _db.Query<Vault>(sql, new { queryid }).ToList();
         }
 
         internal void Delete(int vaultId)

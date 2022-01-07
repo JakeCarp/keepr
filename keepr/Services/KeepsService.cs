@@ -44,6 +44,11 @@ namespace keepr.Services
             return _repo.Update(keep);
         }
 
+        internal List<Keep> GetKeepsByUserId(string id)
+        {
+            return _repo.GetKeepsByUserId(id);
+        }
+
         internal void incrementKeeps(int keepId)
         {
             Keep keep = GetKeepById(keepId);

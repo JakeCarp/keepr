@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using keepr.Models;
 using keepr.Repositories;
 
@@ -54,6 +55,27 @@ namespace keepr.Services
                 throw new Exception("This is not Your Vault");
             }
             return vault;
+        }
+
+        internal List<Vault> GetUserVaults(string queryid, string userId)
+        {
+            List<Vault> vaults = _repo.GetUserVaults(queryid);
+            List<Vault> filtered = new List<Vault>();
+            if (queryid == userId)
+            {
+                return vaults;
+            }
+            else
+            {
+                foreach (Vault v in vaults)
+                {
+                    if (v.IsPrivate)
+                    {
+                        filtered.Add(v);
+                    }
+                }
+                return filtered;
+            }
         }
     }
 }
