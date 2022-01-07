@@ -31,7 +31,8 @@ namespace keepr.Services
             {
                 throw new Exception("Bad Keep Id");
             }
-            return keep;
+            var likedKeep = LikeKeep(keep);
+            return likedKeep;
         }
 
         internal Keep UpdateKeep(string id, Keep update)
@@ -57,6 +58,12 @@ namespace keepr.Services
             {
                 throw new Exception("This is not your keep!");
             }
+            return keep;
+        }
+        internal Keep LikeKeep(Keep keep)
+        {
+            keep.Views += 1;
+            _repo.Update(keep);
             return keep;
         }
     }
