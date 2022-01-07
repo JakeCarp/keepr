@@ -1,34 +1,63 @@
 using System;
 using System.Collections.Generic;
 using keepr.Models;
+using keepr.Repositories;
 
 namespace keepr.Services
 {
     public class KeepsService
     {
+        private readonly KeepsRepository _repo;
+
+        public KeepsService(KeepsRepository repo)
+        {
+            _repo = repo;
+        }
+
         internal Keep Create(Keep newKeep)
         {
-            throw new NotImplementedException();
+            return _repo.Create(newKeep);
         }
 
         internal List<Keep> GetAllKeeps()
         {
-            throw new NotImplementedException();
+            return _repo.GetAllKeeps();
         }
 
         internal Keep GetKeepById(int id)
         {
-            throw new NotImplementedException();
+            var keep = _repo.GetKeepById(id);
+            if (keep == null)
+            {
+                throw new Exception("Bad Keep Id");
+            }
+            return keep;
         }
 
         internal Keep UpdateKeep(string id, Keep update)
         {
-            throw new NotImplementedException();
+            var keep = isKeepOwner(id, update.Id);
+            keep.Name = update.Name ?? keep.Name;
+            keep.Img = update.Img ?? keep.Img;
+            keep.Description = update.Description ?? keep.Description;
+            return _repo.Update(keep);
         }
 
-        internal string DeleteKeep(string id1, int id2)
+        internal string DeleteKeep(string userId, int keepId)
         {
-            throw new NotImplementedException();
+            var keep = isKeepOwner(userId, keepId);
+            _repo.Delete(keepId);
+            return "Keep Deleted";
+        }
+
+        internal Keep isKeepOwner(string userId, int keepId)
+        {
+            var keep = GetKeepById(keepId);
+            if (keep.CreatorId != userId)
+            {
+                throw new Exception("This is not your keep!");
+            }
+            return keep;
         }
     }
 }
