@@ -20,8 +20,10 @@ namespace keepr.Repositories
         {
             var sql = @"
             INSERT INTO keeps(name, description, img, creatorId, views, shares, keeps)
-            VALUES(@Name, @Description, @Img, @CreatorId, @Views, @Shares, @Keeps)
-            SELECT LAST_INSERT_ID(); ";
+            VALUES
+            (@Name, @Description, @Img, @CreatorId, @Views, @Shares, @Keeps);
+            SELECT LAST_INSERT_ID()
+            ; ";
             var id = _db.ExecuteScalar<int>(sql, newKeep);
             newKeep.Id = id;
             return newKeep;
@@ -59,7 +61,7 @@ namespace keepr.Repositories
             {
                 k.Creator = a;
                 return k;
-            }).FirstOrDefault();
+            }, new { id }).FirstOrDefault();
         }
 
         internal List<Keep> GetKeepsByUserId(string id)
