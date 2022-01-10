@@ -43,12 +43,21 @@ namespace keepr.Controllers
 
         [HttpGet("{id}")]
 
-        public ActionResult<Vault> GetVaultById(int id)
+        public async Task<ActionResult<Vault>> GetVaultById(int id)
         {
             try
             {
-                var vault = _vs.GetById(id);
-                return Ok(vault);
+                var userInfo = await HttpContext.GetUserInfoAsync<Account>();
+                if (userInfo == null)
+                {
+                    Vault vaultNA = _vs.GetById(id);
+                    return vaultNA;
+                }
+                else
+                {
+                    Vault vault = _vs.GetById(id, userInfo.Id);
+                    return Ok(vault);
+                }
             }
             catch (Exception e)
             {
@@ -57,13 +66,18 @@ namespace keepr.Controllers
             }
         }
 
+        private Vault GetVaultByIdNoAuth(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         [HttpGet("{id}/keeps")]
 
-        public ActionResult<List<VaultKeepViewModel>> GetKeepsByVaultId(int id)
+        public ActionResult<List<KeepViewModel>> GetKeepsByVaultId(int id)
         {
             try
             {
-                List<VaultKeepViewModel> keeps = _vks.GetKeepsByVaultId(id);
+                List<KeepViewModel> keeps = _vks.GetKeepsByVaultId(id);
                 return Ok(keeps);
             }
             catch (Exception e)
@@ -80,6 +94,7 @@ namespace keepr.Controllers
             try
             {
                 var userInfo = await HttpContext.GetUserInfoAsync<Account>();
+                update.Id = id;
                 var vault = _vs.Update(update, userInfo.Id);
                 return Ok(vault);
             }

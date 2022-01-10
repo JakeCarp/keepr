@@ -17,5 +17,6 @@ namespace keepr.Models
     {
         public Account Creator { get; set; }
         public Keep Keep { get; set; }
+        public Vault Vault { get; set; }
     }
 }

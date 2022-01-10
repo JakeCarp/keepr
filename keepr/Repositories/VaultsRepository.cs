@@ -19,10 +19,11 @@ namespace keepr.Repositories
         internal Vault Create(Vault newVault)
         {
             var sql = @"
-            INSERT INTO vaults(name, description, isPrivate)
-            VALUES(@Name, @Description, @IsPrivate)
+            INSERT INTO vaults(name, description, isPrivate, creatorId)
+            VALUES(@Name, @Description, @IsPrivate, @CreatorId);
             SELECT LAST_INSERT_ID();";
-            var id = _db.ExecuteScalar<int>(sql);
+            var id = _db.ExecuteScalar<int>(sql, newVault);
+            newVault.Id = id;
             return newVault;
         }
 
@@ -40,7 +41,7 @@ namespace keepr.Repositories
             {
                 v.Creator = a;
                 return v;
-            }).FirstOrDefault();
+            }, new { id }).FirstOrDefault();
         }
 
         internal object Update(Vault vault)
@@ -51,7 +52,7 @@ namespace keepr.Repositories
                 SET
                     name = @Name,
                     description = @Description,
-                    isPrivate = @IsPrivate,
+                    isPrivate = @IsPrivate
             WHERE id = @id LIMIT 1;";
             var rowsAffected = _db.Execute(sql, vault);
             if (rowsAffected > 1)
@@ -72,7 +73,7 @@ namespace keepr.Repositories
             SELECT
             *   
             FROM vaults
-            WHERE v.creatorId = @queryid
+            WHERE creatorId = @queryid
             ;";
             return _db.Query<Vault>(sql, new { queryid }).ToList();
         }

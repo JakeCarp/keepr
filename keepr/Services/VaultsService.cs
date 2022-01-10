@@ -27,6 +27,21 @@ namespace keepr.Services
             {
                 throw new Exception("Bad Vault Id");
             }
+            if (vault.IsPrivate)
+            {
+                throw new Exception("This Vault is private");
+            }
+            return vault;
+        }
+
+        //overload for checking with authenticated users
+        internal Vault GetById(int id, string userId)
+        {
+            Vault vault = _repo.GetById(id);
+            if (vault.IsPrivate && vault.CreatorId != userId)
+            {
+                throw new Exception("This Vault is private");
+            }
             return vault;
         }
 
@@ -69,7 +84,7 @@ namespace keepr.Services
             {
                 foreach (Vault v in vaults)
                 {
-                    if (v.IsPrivate)
+                    if (!v.IsPrivate)
                     {
                         filtered.Add(v);
                     }

@@ -101,8 +101,8 @@ namespace keepr.Repositories
             UPDATE keeps
                 SET
                 name = @Name,
-                description = @Description
-                img = @Img,
+                description = @Description,
+                img = @Img
             WHERE id = @id LIMIT 1;";
             var rowsAffected = _db.Execute(sql, keep);
             if (rowsAffected > 1)
