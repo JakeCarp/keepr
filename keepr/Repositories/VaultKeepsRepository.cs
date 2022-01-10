@@ -19,10 +19,11 @@ namespace keepr.Repositories
         {
             var sql = @"
             INSERT INTO vaultKeeps(creatorId, vaultId, keepId)
-            VALUES(@CreatorId, @VaultId, @KeepId)
+            VALUES(@CreatorId, @VaultId, @KeepId);
             SELECT LAST_INSERT_ID()
             ;";
-            var id = _db.ExecuteScalar<int>(sql);
+            var id = _db.ExecuteScalar<int>(sql, newVaultKeep);
+            newVaultKeep.Id = id;
             return newVaultKeep;
 
         }
@@ -36,35 +37,38 @@ namespace keepr.Repositories
             WHERE vk.id = @id
             ;";
 
-            return _db.QueryFirstOrDefault<VaultKeep>(sql);
+            return _db.QueryFirstOrDefault<VaultKeep>(sql, new { id });
         }
 
-        internal void Delete(int id)
+        internal void Delete(int vaultKeepId)
         {
             var sql = @"
             DELETE FROM vaultKeeps
-            WHERE id = @id
+            WHERE id = @vaultKeepId
             ;";
-            _db.Execute(sql, new { id });
+            _db.Execute(sql, new { vaultKeepId });
         }
 
-        internal List<VaultKeepViewModel> GetKeepsByVaultId(int id)
+        internal List<KeepViewModel> GetKeepsByVaultId(int id)
         {
+
+            //TODO This is not good
             var sql = @"
             SELECT
                 vk.*,
-                a.*,
-                k.*
+                k.*,
+                a.*
             FROM vaultKeeps vk
-            JOIN accounts a ON a.id = vk.creatorId
             JOIN keeps k ON k.id = vk.keepId
-            WHERE vk.vaultId = @id
+            JOIN accounts a ON vk.creatorId = a.id
+            WHERE vk.vaultId = @id 
             ;";
-            return _db.Query<VaultKeepViewModel, Account, Keep, VaultKeepViewModel>(sql, (vaultKeep, acct, keep) =>
+            return _db.Query<KeepViewModel, Keep, Account, VaultKeep, KeepViewModel>(sql, (kv, k, acct, vk) =>
             {
-                vaultKeep.Creator = acct;
-                vaultKeep.Keep = keep;
-                return vaultKeep;
+
+                kv.Creator = acct;
+                kv.vaultKeepId = vk.Id;
+                return kv;
             }, new { id }).ToList();
         }
     }
