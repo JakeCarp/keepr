@@ -1,8 +1,12 @@
 <template>
   <div class="container-fluid">
-    <div class="row">
-      <div class="col-12 text-center">
-        <h1 class="text-dark">KEEPr</h1>
+    <div class="row mt-4">
+      <div class="col-12 grid">
+        <div class="item" v-for="k in keeps" :key="k.id">
+          <div class="content">
+            <Keep :keep="k" />
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -19,7 +23,7 @@ export default {
       await keepsService.getAllKeeps()
     })
     return {
-      keeps: computed(() => AppState.keeps)
+      keeps: computed(() => AppState.keeps),
     }
   }
 }
@@ -42,5 +46,10 @@ export default {
       object-position: center;
     }
   }
+}
+.grid {
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 }
 </style>

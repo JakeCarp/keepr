@@ -1,74 +1,84 @@
 <template>
-  <nav class="navbar navbar-dark bg-dark">
-    <div class="container-fluid">
+  <nav
+    class="
+      navbar navbar-expand-lg navbar-dark
+      bg-success
+      px-3
+      d-flex
+      justify-content-between
+      align-items-center
+    "
+  >
+    <router-link class="navbar-brand d-flex" :to="{ name: 'Home' }">
+      <div class="d-flex flex-column align-items-center">
+        <img alt="logo" src="../assets/img/cw-logo.png" height="45" />
+      </div>
+    </router-link>
+    <form>
+      <div class="input-group">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Search..."
+          aria-label="Username"
+          aria-describedby="search bar"
+        />
+        <span class="input-group-text"
+          ><i class="mdi mdi-magnify text-success"></i
+        ></span>
+      </div>
+    </form>
+    <span class="navbar-text">
       <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="offcanvas"
-        data-bs-target="#offcanvasNavbar"
-        aria-controls="offcanvasNavbar"
+        class="
+          btn
+          selectable
+          text-dark
+          lighten-30
+          text-uppercase
+          my-2 my-lg-0
+          border-dark
+        "
+        @click="login"
+        v-if="!user.isAuthenticated"
       >
-        <span class="navbar-toggler-icon"></span>
+        Login
       </button>
-      <div
-        class="offcanvas offcanvas-start text-success bg-dark"
-        tabindex="-1"
-        id="offcanvasNavbar"
-        aria-labelledby="offcanvasNavbarLabel"
-      >
-        <div class="offcanvas-header">
-          <h5 class="offcanvas-title" id="offcanvasNavbarLabel">KEEPr</h5>
-          <button
-            type="button "
-            class="btn-close btn-close-white text-reset"
-            data-bs-dismiss="offcanvas"
-            aria-label="Close"
-          ></button>
+
+      <div class="dropdown my-2 my-lg-0" v-else>
+        <div
+          class="dropdown-toggle selectable bg-dark rounded"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+          id="authDropdown"
+        >
+          <img
+            :src="user.picture"
+            alt="user photo"
+            height="40"
+            class="rounded"
+          />
+          <span class="mx-3 text-success lighten-30">{{ user.name }}</span>
         </div>
-        <div class="offcanvas-body">
-          <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-            <li class="nav-item">
-              <h5 @click="routeTo('Home')" class="nav-link">HOME</h5>
-            </li>
-            <li class="nav-item">
-              <h5 @click="routeTo('About')" class="nav-link">ABOUT</h5>
-            </li>
-            <li
-              class="nav-item"
-              title="profile page"
-              v-if="user.isAuthenticated"
-            >
-              <h5 @click="routeTo('Account')" class="nav-link">PROFILE</h5>
-            </li>
-            <li v-if="user.isAuthenticated" class="my-2">
-              <img
-                :src="user.picture"
-                alt="user photo"
-                height="40"
-                class="rounded"
-              />
-              <span class="mx-3 text-success lighten-30">{{ user.name }}</span>
-            </li>
-            <li>
-              <button
-                class="btn selectable text-success border-success my-2"
-                @click="login"
-                v-if="!user.isAuthenticated"
-              >
-                LOGIN
-              </button>
-              <button
-                class="btn selectable text-success border-success my-2"
-                v-if="user.isAuthenticated"
-                @click="logout"
-              >
-                LOGOUT
-              </button>
-            </li>
-          </ul>
+        <div
+          class="dropdown-menu p-0 list-group w-100"
+          aria-labelledby="authDropdown"
+        >
+          <router-link :to="{ name: 'Account' }">
+            <div class="list-group-item list-group-item-action hoverable">
+              Manage Account
+            </div>
+          </router-link>
+          <div
+            class="list-group-item list-group-item-action hoverable text-danger"
+            @click="logout"
+          >
+            <i class="mdi mdi-logout"></i>
+            logout
+          </div>
         </div>
       </div>
-    </div>
+    </span>
   </nav>
 </template>
 

@@ -55,19 +55,26 @@ namespace keepr.Repositories
             //TODO This is not good
             var sql = @"
             SELECT
-                vk.*,
+            vk.*  ,
                 k.*,
                 a.*
             FROM vaultKeeps vk
             JOIN keeps k ON k.id = vk.keepId
-            JOIN accounts a ON vk.creatorId = a.id
+            JOIN accounts a ON k.creatorId = a.id
             WHERE vk.vaultId = @id 
             ;";
-            return _db.Query<KeepViewModel, Keep, Account, VaultKeep, KeepViewModel>(sql, (kv, k, acct, vk) =>
+            return _db.Query<KeepViewModel, Keep, Account, KeepViewModel>(sql, (kv, k, acct) =>
             {
-
+                kv.Name = k.Name;
+                kv.Img = k.Img;
+                kv.Views = k.Views;
+                kv.Shares = k.Shares;
+                kv.Keeps = k.Keeps;
+                kv.Description = k.Description;
+                kv.CreatedAt = k.CreatedAt;
+                kv.UpdatedAt = k.UpdatedAt;
                 kv.Creator = acct;
-                kv.vaultKeepId = vk.Id;
+                kv.vaultKeepId = id;
                 return kv;
             }, new { id }).ToList();
         }

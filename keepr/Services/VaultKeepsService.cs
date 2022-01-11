@@ -10,10 +10,13 @@ namespace keepr.Services
         private readonly VaultKeepsRepository _repo;
         private readonly VaultsService _vs;
 
-        public VaultKeepsService(VaultKeepsRepository repo, VaultsService vs)
+        private readonly KeepsService _ks;
+
+        public VaultKeepsService(VaultKeepsRepository repo, VaultsService vs, KeepsService ks)
         {
             _repo = repo;
             _vs = vs;
+            _ks = ks;
         }
 
         internal VaultKeep Create(VaultKeep newVaultKeep)
@@ -23,6 +26,7 @@ namespace keepr.Services
             {
                 throw new Exception("You Cannot Add Keeps To a Vault You Do not own");
             }
+            _ks.incrementKeeps(newVaultKeep.KeepId);
             return _repo.Create(newVaultKeep);
         }
 
@@ -30,6 +34,7 @@ namespace keepr.Services
         {
             var vaultKeep = isVaultKeepOwner(id, userId);
             _repo.Delete(id);
+            _ks.decrementKeeps(vaultKeep.KeepId);
             return vaultKeep;
         }
 
