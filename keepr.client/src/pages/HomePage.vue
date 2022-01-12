@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid">
     <div class="row mt-4">
-      <div class="col-12 grid">
+      <div class="col-12 masonry">
         <div class="item" v-for="k in keeps" :key="k.id">
           <div class="content">
             <Keep :keep="k" />
@@ -10,6 +10,7 @@
       </div>
     </div>
   </div>
+  <KeepModal />
 </template>
 
 <script>
@@ -47,9 +48,17 @@ export default {
     }
   }
 }
-.grid {
-  display: grid;
-  grid-gap: 10px;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+.masonry {
+  /* Masonry container */
+  column-count: 4;
+  column-gap: 1em;
+}
+
+.item {
+  /* Masonry bricks or child elements */
+  background-color: #eee;
+  display: inline-block;
+  margin: 0 0 1em;
+  width: 100%;
 }
 </style>

@@ -81,7 +81,7 @@ namespace keepr.Services
         }
         internal Keep LikeKeep(Keep keep)
         {
-            keep.Views--;
+            keep.Views++;
             _repo.ChangeViews(keep);
             return keep;
         }

@@ -21,12 +21,11 @@ namespace keepr.Services
 
         internal VaultKeep Create(VaultKeep newVaultKeep)
         {
-            Vault vault = _vs.GetById(newVaultKeep.VaultId);
+            Vault vault = _vs.GetById(newVaultKeep.VaultId, newVaultKeep.CreatorId);
             if (vault.CreatorId != newVaultKeep.CreatorId)
             {
                 throw new Exception("You Cannot Add Keeps To a Vault You Do not own");
             }
-            _ks.incrementKeeps(newVaultKeep.KeepId);
             return _repo.Create(newVaultKeep);
         }
 

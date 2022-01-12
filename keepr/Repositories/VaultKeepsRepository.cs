@@ -65,6 +65,7 @@ namespace keepr.Repositories
             ;";
             return _db.Query<KeepViewModel, Keep, Account, KeepViewModel>(sql, (kv, k, acct) =>
             {
+                kv.Id = k.Id;
                 kv.Name = k.Name;
                 kv.Img = k.Img;
                 kv.Views = k.Views;
