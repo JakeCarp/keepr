@@ -72,6 +72,19 @@ namespace keepr.Services
             return vault;
         }
 
+        internal List<Vault> GetUserVaults(string queryid)
+        {
+            List<Vault> vaults = _repo.GetUserVaults(queryid);
+            List<Vault> filtered = new List<Vault>();
+            foreach (Vault v in vaults)
+            {
+                if (!v.IsPrivate)
+                {
+                    filtered.Add(v);
+                }
+            }
+            return filtered;
+        }
         internal List<Vault> GetUserVaults(string queryid, string userId)
         {
             List<Vault> vaults = _repo.GetUserVaults(queryid);

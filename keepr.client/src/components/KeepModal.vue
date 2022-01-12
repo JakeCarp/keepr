@@ -43,7 +43,7 @@
                 <p class="m-0">{{ keep.description }}</p>
               </div>
               <div class="controls col-12 align-self-end">
-                <div class="row pb-3">
+                <div class="row pb-3 justify-content-between align-items-end">
                   <div class="vaultsdropdown col-4" v-if="account.id">
                     <button
                       class="btn btn-secondary dropdown-toggle"
@@ -73,31 +73,42 @@
                       v-if="account.id === keep.creatorId"
                     ></i>
                   </div>
-                  <div class="col-7">
-                    <div v-if="account.id === keep.creatorId">
-                      <router-link to="/account">
-                        <img
-                          :src="keep.creator?.picture"
-                          alt="user photo"
-                          height="40"
-                          class="rounded"
-                        />
-                      </router-link>
-                    </div>
-                    <div v-else>
-                      <router-link
-                        :to="{
-                          name: 'Profile',
-                          params: { id: keep.creatorId },
-                        }"
+                  <div class="col-4">
+                    <div class="row align-items-end">
+                      <div
+                        class="p-0 d-flex flex-column"
+                        v-if="account.id === keep.creatorId"
                       >
-                        <img
-                          :src="keep.creator?.picture"
-                          alt="user photo"
-                          height="40"
-                          class="rounded"
-                        />
-                      </router-link>
+                        <router-link to="/account">
+                          <img
+                            :src="keep.creator?.picture"
+                            alt="user photo"
+                            height="40"
+                            class="rounded"
+                          />
+                          <p class="m-0">
+                            {{ keep.creator?.name.split("@")[0].toUpperCase() }}
+                          </p>
+                        </router-link>
+                      </div>
+                      <div v-else>
+                        <router-link
+                          :to="{
+                            name: 'Profile',
+                            params: { id: keep.creatorId },
+                          }"
+                        >
+                          <img
+                            :src="keep.creator?.picture"
+                            alt="user photo"
+                            height="40"
+                            class="rounded"
+                          />
+                          <p class="m-0">
+                            {{ keep.creator?.name.split("@")[0].toUpperCase() }}
+                          </p>
+                        </router-link>
+                      </div>
                     </div>
                   </div>
                 </div>

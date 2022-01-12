@@ -17,7 +17,7 @@
         <h5 class="card-title title-text">{{ keep.name }}</h5>
       </div>
 
-      <div v-if="account.id === keep.creatorId">
+      <div v-if="account.id === keep.creatorId && route.name != 'Profile'">
         <router-link to="/account">
           <img
             :src="keep.creator?.picture"
@@ -27,7 +27,7 @@
           />
         </router-link>
       </div>
-      <div v-else>
+      <div v-if="route.name != 'Profile' && route.name != 'Account'">
         <router-link
           :to="{
             name: 'Profile',
@@ -50,18 +50,18 @@
 <script>
 import { Modal } from 'bootstrap'
 import { keepsService } from '../services/KeepsService'
-import Pop from '../utils/Pop'
 import { logger } from '../utils/Logger'
-import { useRouter } from 'vue-router'
 import { computed } from '@vue/reactivity'
 import { AppState } from '../AppState'
+import { useRoute } from 'vue-router'
 export default {
   props: {
     keep: { type: Object, required: true }
   },
   setup(props) {
-    const router = useRouter()
+    const route = useRoute()
     return {
+      route,
       account: computed(() => AppState.account),
       async setActive() {
         try {
