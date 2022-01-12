@@ -30,7 +30,7 @@ namespace keepr.Controllers
             try
             {
                 var userInfo = await HttpContext.GetUserInfoAsync<Account>();
-                newVaultKeep.CreatorId = userInfo.Id;
+                newVaultKeep.CreatorId = userInfo?.Id;
                 VaultKeep vk = _vks.Create(newVaultKeep);
                 _ks.incrementKeeps(vk.KeepId);
                 return Ok(vk);

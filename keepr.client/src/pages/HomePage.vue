@@ -9,8 +9,8 @@
         </div>
       </div>
     </div>
+    <KeepModal />
   </div>
-  <KeepModal />
 </template>
 
 <script>

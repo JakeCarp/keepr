@@ -1,8 +1,6 @@
 <template>
   <div
     class="card bg-dark text-white rounded elevation-2 grad selectable"
-    data-bs-toggle="modal"
-    data-bs-target="#keep-modal"
     @click="setActive"
   >
     <img :src="keep.img" class="card-img" alt="keep img" />
@@ -18,13 +16,31 @@
       <div class="text-center">
         <h5 class="card-title title-text">{{ keep.name }}</h5>
       </div>
-      <div>
-        <img
-          :src="keep.creator.picture"
-          alt="user photo"
-          height="40"
-          class="rounded"
-        />
+
+      <div v-if="account.id === keep.creatorId">
+        <router-link to="/account">
+          <img
+            :src="keep.creator?.picture"
+            alt="user photo"
+            height="40"
+            class="rounded"
+          />
+        </router-link>
+      </div>
+      <div v-else>
+        <router-link
+          :to="{
+            name: 'Profile',
+            params: { id: keep.creatorId },
+          }"
+        >
+          <img
+            :src="keep.creator?.picture"
+            alt="user photo"
+            height="40"
+            class="rounded"
+          />
+        </router-link>
       </div>
     </div>
   </div>
@@ -32,15 +48,30 @@
 
 
 <script>
+import { Modal } from 'bootstrap'
 import { keepsService } from '../services/KeepsService'
+import Pop from '../utils/Pop'
+import { logger } from '../utils/Logger'
+import { useRouter } from 'vue-router'
+import { computed } from '@vue/reactivity'
+import { AppState } from '../AppState'
 export default {
   props: {
     keep: { type: Object, required: true }
   },
   setup(props) {
+    const router = useRouter()
     return {
+      account: computed(() => AppState.account),
       async setActive() {
-        await keepsService.setActive(props.keep)
+        try {
+          await keepsService.setActive(props.keep)
+          if (document.getElementById("keep-modal")) {
+            Modal.getOrCreateInstance(document.getElementById("keep-modal")).toggle()
+          }
+        } catch (error) {
+          logger.error(error)
+        }
       }
     }
   }

@@ -22,10 +22,6 @@ namespace keepr.Services
         internal VaultKeep Create(VaultKeep newVaultKeep)
         {
             Vault vault = _vs.GetById(newVaultKeep.VaultId, newVaultKeep.CreatorId);
-            if (vault.CreatorId != newVaultKeep.CreatorId)
-            {
-                throw new Exception("You Cannot Add Keeps To a Vault You Do not own");
-            }
             return _repo.Create(newVaultKeep);
         }
 
@@ -42,7 +38,19 @@ namespace keepr.Services
             Vault vault = _vs.GetById(id);
             if (vault.IsPrivate)
             {
-                throw new Exception("This Vault Is Private!");
+                throw new Exception("This Vault Is private!");
+            }
+
+            return _repo.GetKeepsByVaultId(id);
+
+
+        }
+        internal List<KeepViewModel> GetKeepsByVaultId(int id, string userId)
+        {
+            Vault vault = _vs.GetById(id, userId);
+            if (vault.IsPrivate && vault.CreatorId != userId)
+            {
+                throw new Exception("blah");
             }
 
             return _repo.GetKeepsByVaultId(id);

@@ -66,19 +66,24 @@ namespace keepr.Controllers
             }
         }
 
-        private Vault GetVaultByIdNoAuth(int id)
-        {
-            throw new NotImplementedException();
-        }
 
         [HttpGet("{id}/keeps")]
 
-        public ActionResult<List<KeepViewModel>> GetKeepsByVaultId(int id)
+        public async Task<ActionResult<List<KeepViewModel>>> GetKeepsByVaultId(int id)
         {
             try
             {
-                List<KeepViewModel> keeps = _vks.GetKeepsByVaultId(id);
-                return Ok(keeps);
+                var userInfo = await HttpContext.GetUserInfoAsync<Account>();
+                if (userInfo == null)
+                {
+                    List<KeepViewModel> keeps = _vks.GetKeepsByVaultId(id);
+                    return Ok(keeps);
+                }
+                else
+                {
+                    List<KeepViewModel> keeps = _vks.GetKeepsByVaultId(id, userInfo?.Id);
+                    return Ok(keeps);
+                }
             }
             catch (Exception e)
             {

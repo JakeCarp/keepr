@@ -1,6 +1,11 @@
 <template>
-  <div class="modal" tabindex="-1">
-    <div class="modal-dialog-lg modal-dialog-centered">
+  <div
+    class="modal fade"
+    tabindex="-1"
+    aria-labelledby="Modal"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-body">
           <slot name="modal-body"></slot>
