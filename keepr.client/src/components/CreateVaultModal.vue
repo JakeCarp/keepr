@@ -35,7 +35,11 @@
         </div>
       </form>
       <div class="text-end">
-        <button class="btn btn-success" @click="createVault">
+        <button
+          title="Create Vault"
+          class="btn btn-success"
+          @click="createVault"
+        >
           Create Vault
         </button>
       </div>

@@ -33,7 +33,9 @@
         </div>
       </form>
       <div class="text-end">
-        <button class="btn btn-success" @click="createKeep">Create Keep</button>
+        <button title="create Keep" class="btn btn-success" @click="createKeep">
+          Create Keep
+        </button>
       </div>
     </template>
   </Modal>

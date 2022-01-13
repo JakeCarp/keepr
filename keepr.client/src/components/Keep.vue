@@ -17,6 +17,7 @@
         <h5 class="card-title title-text">{{ keep.name }}</h5>
         <button
           v-if="route.name === 'Vault'"
+          title="remove from vault"
           class="btn btn-danger"
           @click="removeFromVault"
         >
