@@ -80,14 +80,21 @@ import { accountService } from '../services/AccountService'
 import { AppState } from '../AppState'
 import Vault from '../components/Vault.vue'
 import { Modal } from 'bootstrap'
+import Pop from '../utils/Pop'
 export default {
   components: { Vault },
   setup() {
     const route = useRoute()
     onMounted(async () => {
-      await vaultsService.getProfileVaults(route.params.id)
-      await keepsService.getUserKeeps(route.params.id)
-      await accountService.getProfile(route.params.id)
+      try {
+        await vaultsService.getProfileVaults(route.params.id)
+        await keepsService.getUserKeeps(route.params.id)
+        await accountService.getProfile(route.params.id)
+
+      } catch (error) {
+        logger.error(error)
+        Pop.toast(error, 'error')
+      }
     })
     return {
       focusedUser: computed(() => AppState.focusedUser),

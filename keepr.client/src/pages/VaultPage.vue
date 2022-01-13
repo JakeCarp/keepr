@@ -23,6 +23,7 @@ import { computed, onMounted } from '@vue/runtime-core'
 import { vaultsService } from '../services/VaultsService'
 import { useRoute, useRouter } from 'vue-router'
 import { AppState } from '../AppState'
+import Pop from '../utils/Pop'
 export default {
   setup() {
     const router = useRouter()
@@ -35,6 +36,7 @@ export default {
         router.push({
           name: 'Home'
         })
+        Pop.toast(error, 'error')
       }
     })
     return {

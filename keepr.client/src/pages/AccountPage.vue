@@ -82,12 +82,18 @@ import { accountService } from '../services/AccountService'
 import { AppState } from '../AppState'
 import Vault from '../components/Vault.vue'
 import { Modal } from 'bootstrap'
+import Pop from '../utils/Pop'
 export default {
   components: { Vault },
   setup() {
     onMounted(async () => {
-      await vaultsService.getUserVaults()
-      await keepsService.getMyKeeps()
+      try {
+        await vaultsService.getUserVaults()
+        await keepsService.getMyKeeps()
+      } catch (error) {
+        logger.error(error)
+        Pop.toast(error, 'error')
+      }
     })
     return {
       account: computed(() => AppState.account),

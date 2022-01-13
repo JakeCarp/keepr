@@ -17,11 +17,18 @@
 import { computed, onBeforeUnmount, onMounted } from '@vue/runtime-core'
 import { keepsService } from '../services/KeepsService'
 import { AppState } from '../AppState'
+import Pop from '../utils/Pop'
 export default {
   name: 'Home',
   setup() {
     onMounted(async () => {
-      await keepsService.getAllKeeps()
+      try {
+        await keepsService.getAllKeeps()
+
+      } catch (error) {
+        logger.error(error)
+        Pop.toast(error, 'error')
+      }
     })
     return {
       keeps: computed(() => AppState.keeps),
