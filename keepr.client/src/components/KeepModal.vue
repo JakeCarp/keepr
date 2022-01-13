@@ -70,6 +70,7 @@
                     <i
                       title="delete keep"
                       class="mdi mdi-trash-can mdi-24px selectable"
+                      @click="deleteKeep"
                       v-if="account.id === keep.creatorId"
                     ></i>
                   </div>
@@ -130,6 +131,7 @@ import Pop from '../utils/Pop'
 import { logger } from '../utils/Logger'
 import { onBeforeUnmount } from '@vue/runtime-core'
 import { Modal } from 'bootstrap'
+import { keepsService } from '../services/KeepsService'
 export default {
   setup() {
 
@@ -146,6 +148,19 @@ export default {
         } catch (error) {
           logger.error(error)
           Pop.toast(error, 'error')
+        }
+      },
+      async deleteKeep() {
+        try {
+          if (await Pop.confirm('Are you sure you want to delete this Keep?', 'This Cannot be undone', 'question')) {
+            await keepsService.deleteKeep(this.keep.id)
+          }
+          Modal.getOrCreateInstance(document.getElementById('keep-modal')).hide()
+          Pop.toast('Keep Deleted!', 'success')
+        } catch (error) {
+          logger.error(error)
+          Modal.getOrCreateInstance(document.getElementById('keep-modal')).hide()
+          Pop.toast('Something went wrong', 'error')
         }
       }
     }

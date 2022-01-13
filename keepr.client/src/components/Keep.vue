@@ -1,7 +1,7 @@
 <template>
   <div
     class="card bg-dark text-white rounded elevation-2 grad selectable"
-    @click="setActive"
+    @click.stop="setActive"
   >
     <img :src="keep.img" class="card-img" alt="keep img" />
     <div
@@ -15,6 +15,13 @@
     >
       <div class="text-center">
         <h5 class="card-title title-text">{{ keep.name }}</h5>
+        <button
+          v-if="route.name === 'Vault'"
+          class="btn btn-danger"
+          @click="removeFromVault"
+        >
+          Remove from Vault
+        </button>
       </div>
 
       <div
@@ -61,6 +68,8 @@ import { logger } from '../utils/Logger'
 import { computed } from '@vue/reactivity'
 import { AppState } from '../AppState'
 import { useRoute, useRouter } from 'vue-router'
+import { vaultKeepsService } from '../services/VaultKeepsService'
+import Pop from '../utils/Pop'
 export default {
   props: {
     keep: { type: Object, required: true }
@@ -91,6 +100,15 @@ export default {
         router.push({
           name: 'Account',
         })
+      },
+      async removeFromVault() {
+        try {
+          await vaultKeepsService.removeFromVault(props.keep.vaultKeepId)
+          Pop.toast('Keep removed from vault', 'success')
+        } catch (error) {
+          logger.error(error)
+          Pop.toast('Something went wrong', 'error')
+        }
       }
     }
   }

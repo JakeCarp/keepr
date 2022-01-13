@@ -1,5 +1,9 @@
 <template>
   <div class="container-fluid">
+    <div class="row text-center my-5">
+      <h1>{{ vault.name }}</h1>
+      <p class="m-0">{{ vault.description }}</p>
+    </div>
     <div class="row mt-4">
       <div class="col-12 masonry">
         <div class="item" v-for="k in keeps" :key="k.id">
@@ -25,6 +29,7 @@ export default {
     const route = useRoute()
     onMounted(async () => {
       try {
+        await vaultsService.getVaultById(route.params.id)
         await vaultsService.getKeepsInVault(route.params.id)
       } catch (error) {
         router.push({
@@ -33,6 +38,7 @@ export default {
       }
     })
     return {
+      vault: computed(() => AppState.activeVault),
       keeps: computed(() => AppState.keeps)
     }
   }

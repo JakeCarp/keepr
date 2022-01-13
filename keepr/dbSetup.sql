@@ -37,4 +37,4 @@
 --   FOREIGN KEY (keepId) REFERENCES keeps(id) ON DELETE CASCADE
 -- ) default charset utf8;
 DELETE FROM
-  keeps;
+  vaults;

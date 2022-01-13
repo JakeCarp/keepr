@@ -38,7 +38,6 @@ export default {
     return {
       router,
       setActiveVault() {
-        vaultsService.setActiveVault(props.vault)
         router.push({
           name: 'Vault',
           params: { id: `${props.vault.id}` }

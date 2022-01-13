@@ -29,6 +29,8 @@
           <i
             title="create vault"
             class="mdi mdi-plus text-success selectable"
+            data-bs-toggle="modal"
+            data-bs-target="#create-vault-modal"
           ></i>
         </h3>
       </div>
@@ -45,6 +47,8 @@
         <h3>
           Keeps
           <i
+            data-bs-toggle="modal"
+            data-bs-target="#create-keep-modal"
             title="create vault"
             class="mdi mdi-plus text-success selectable"
           ></i>
@@ -63,7 +67,9 @@
       </div>
     </div>
   </div>
+  <CreateVaultModal />
   <KeepModal />
+  <CreateKeepModal />
 </template>
 
 
