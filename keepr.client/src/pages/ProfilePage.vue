@@ -15,12 +15,12 @@
           </div>
           <div class="col-12">
             <h4>
-              Keeps: <span>{{ keeps.length }}</span>
+              Keeps: <span>{{ keeps?.length }}</span>
             </h4>
           </div>
           <div class="col-12">
             <h4>
-              Vaults: <span>{{ vaults.length }}</span>
+              Vaults: <span>{{ vaults?.length }}</span>
             </h4>
           </div>
         </div>
@@ -30,19 +30,16 @@
       <div class="col-12">
         <h3>
           Vaults
-          <i
+          <!-- <i
             title="create vault"
             class="mdi mdi-plus text-success selectable"
-          ></i>
+          ></i> -->
         </h3>
       </div>
       <div class="col-12">
         <div class="row ms-4">
-          <div class="col-2" v-for="(v, index) in vaults" :key="v.id">
-            <Vault
-              :vault="v"
-              :vaultImg="vaultKeeps[index] ? vaultKeeps[index][0]?.img : ''"
-            />
+          <div class="col-2" v-for="v in vaults" :key="v.id">
+            <Vault :vault="v" />
           </div>
         </div>
       </div>
@@ -50,11 +47,11 @@
     <div class="row mt-5">
       <div class="col-12">
         <h3>
-          Vaults
-          <i
+          Keeps
+          <!-- <i
             title="create vault"
             class="mdi mdi-plus text-success selectable"
-          ></i>
+          ></i> -->
         </h3>
       </div>
       <div class="col-12">
@@ -82,6 +79,7 @@ import { useRoute } from 'vue-router'
 import { accountService } from '../services/AccountService'
 import { AppState } from '../AppState'
 import Vault from '../components/Vault.vue'
+import { Modal } from 'bootstrap'
 export default {
   components: { Vault },
   setup() {
@@ -95,7 +93,6 @@ export default {
       focusedUser: computed(() => AppState.focusedUser),
       keeps: computed(() => AppState.keeps),
       vaults: computed(() => AppState.vaults),
-      vaultKeeps: computed(() => AppState.vaultKeeps)
     }
   }
 }

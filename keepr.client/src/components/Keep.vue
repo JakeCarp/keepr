@@ -17,30 +17,37 @@
         <h5 class="card-title title-text">{{ keep.name }}</h5>
       </div>
 
-      <div v-if="account.id === keep.creatorId && route.name != 'Profile'">
-        <router-link to="/account">
+      <div
+        v-if="
+          account.id === keep.creatorId &&
+          route.name != 'Profile' &&
+          route.name != 'Account'
+        "
+      >
+        <div @click.stop="routeAcct">
           <img
             :src="keep.creator?.picture"
             alt="user photo"
             height="40"
             class="rounded"
           />
-        </router-link>
+        </div>
       </div>
-      <div v-if="route.name != 'Profile' && route.name != 'Account'">
-        <router-link
-          :to="{
-            name: 'Profile',
-            params: { id: keep.creatorId },
-          }"
-        >
+      <div
+        v-if="
+          route.name != 'Profile' &&
+          route.name != 'Account' &&
+          keep.creatorId != account.id
+        "
+      >
+        <div @click.stop="routeProfile">
           <img
             :src="keep.creator?.picture"
             alt="user photo"
             height="40"
             class="rounded"
           />
-        </router-link>
+        </div>
       </div>
     </div>
   </div>
@@ -53,13 +60,14 @@ import { keepsService } from '../services/KeepsService'
 import { logger } from '../utils/Logger'
 import { computed } from '@vue/reactivity'
 import { AppState } from '../AppState'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 export default {
   props: {
     keep: { type: Object, required: true }
   },
   setup(props) {
     const route = useRoute()
+    const router = useRouter()
     return {
       route,
       account: computed(() => AppState.account),
@@ -72,6 +80,17 @@ export default {
         } catch (error) {
           logger.error(error)
         }
+      },
+      routeProfile() {
+        router.push({
+          name: 'Profile',
+          params: { id: `${props.keep.creatorId}` }
+        })
+      },
+      routeAcct() {
+        router.push({
+          name: 'Account',
+        })
       }
     }
   }

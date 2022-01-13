@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { computed, onMounted } from '@vue/runtime-core'
+import { computed, onBeforeUnmount, onMounted } from '@vue/runtime-core'
 import { keepsService } from '../services/KeepsService'
 import { AppState } from '../AppState'
 export default {

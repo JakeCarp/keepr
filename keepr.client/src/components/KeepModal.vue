@@ -132,9 +132,7 @@ import { onBeforeUnmount } from '@vue/runtime-core'
 import { Modal } from 'bootstrap'
 export default {
   setup() {
-    onBeforeUnmount(() => {
-      Modal.getOrCreateInstance(document.getElementById('keep-modal')).hide()
-    })
+
     return {
       keep: computed(() => AppState.activeKeep),
       account: computed(() => AppState.account),

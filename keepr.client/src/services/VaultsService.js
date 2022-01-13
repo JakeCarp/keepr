@@ -13,19 +13,18 @@ class VaultsService {
         const res = await api.get('api/profiles/' + id + '/vaults')
         logger.log("VAULTS", res.data)
         AppState.vaults = res.data
-        AppState.vaults.forEach(v => {
-            this.getKeepsInVault(v.id)
-        })
     }
 
     async getKeepsInVault(vaultId) {
         const res = await api.get('api/vaults/' + vaultId + '/keeps')
         logger.log("KEEPS FOR VAULTS", res.data)
 
-        if (res.data.length > 1) {
-            
-        }
-        AppState.vaultKeeps.push(res.data)
+       AppState.keeps = res.data
+    }
+
+    setActiveVault(vault) {
+        AppState.activeVault = vault
+        AppState.keeps = AppState.vaultKeeps
     }
 }
 export const vaultsService = new VaultsService()
