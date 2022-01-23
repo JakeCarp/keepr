@@ -3,6 +3,7 @@
     <div class="row text-center my-5">
       <h1>{{ vault.name }}</h1>
       <p class="m-0">{{ vault.description }}</p>
+      <i class="mdi mdi-trash-can" @click="deleteVault"></i>
     </div>
     <div class="row mt-4">
       <div class="col-12 masonry">
@@ -24,6 +25,7 @@ import { vaultsService } from '../services/VaultsService'
 import { useRoute, useRouter } from 'vue-router'
 import { AppState } from '../AppState'
 import Pop from '../utils/Pop'
+import { logger } from '../utils/Logger'
 export default {
   setup() {
     const router = useRouter()
@@ -40,8 +42,24 @@ export default {
       }
     })
     return {
+      router,
       vault: computed(() => AppState.activeVault),
-      keeps: computed(() => AppState.keeps)
+      keeps: computed(() => AppState.keeps),
+      async deleteVault() {
+        try {
+          if (await Pop.confirm('Delete vault?', 'cannot undo', 'question')) {
+            await vaultsService.deleteVault(this.vault.id)
+            Pop.toast('Vault Deleted!', 'success')
+
+          }
+          router.push({
+            name: 'Home'
+          })
+        } catch (error) {
+          logger.error(error)
+          Pop.toast('something wrong', 'error')
+        }
+      }
     }
   }
 }

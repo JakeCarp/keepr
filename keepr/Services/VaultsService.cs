@@ -64,7 +64,7 @@ namespace keepr.Services
 
         internal Vault isVaultOwner(string userId, int vaultId)
         {
-            Vault vault = GetById(vaultId);
+            Vault vault = GetById(vaultId, userId);
             if (vault.CreatorId != userId)
             {
                 throw new Exception("This is not Your Vault");
